@@ -1,0 +1,276 @@
+SHELL = /bin/bash
+## name of the executable
+EXECNAME = flexwrf33
+#
+############## NETCDF library path #################
+#NETCDF = /wrk/d0/jbrioude/netcdf-3.6.2/lib
+NETCDF = /usr
+
+# NetCDF library version 3 or 4. Version 4 is much better for compression
+NETCDFVERSION=4
+
+############### Specify the compiler you want
+# COMPILER options --- gnu, pgi, intel
+COMPILER = gnu
+
+########  Unless you want to change compiler options, you shouldn't have
+########  to change anything in this section
+################################################################
+#GNU_FFLAGS  =  -g -m64 -mcmodel=medium -fconvert=little-endian -finit-local-zero -fno-range-check
+#GNU_LDFLAGS =  -g -m64 -mcmodel=medium -fconvert=little-endian -finit-local-zero -lnetcdff -fno-range-check
+GNU_FFLAGS  =  -O3 -m64 -mcmodel=medium -fconvert=little-endian -finit-local-zero -fno-range-check
+GNU_LDFLAGS = -O3 -m64 -mcmodel=medium -fconvert=little-endian -finit-local-zero -lnetcdff -fno-range-check
+#GNU_FFLAGS  =  -O3 -mcmodel=medium -fno-range-check
+#GNU_LDFLAGS = -O3 -mcmodel=medium -lnetcdff 
+
+#PGI_FFLAGS  = -fastsse -mcmodel=medium -traceback -Mbounds -Mchkfpstk -Mchkptr -Mchkstk  
+#PGI_FFLAGS  = -fastsse -mcmodel=medium -tp=nehalem-64 
+ PGI_FFLAGS  = -fastsse -mcmodel=medium 
+#PGI_LDFLAGS = -fastsse -mcmodel=medium -traceback -Mbounds -Mchkfpstk -Mchkptr -Mchkstk -lnetcdff -Kieee
+#PGI_LDFLAGS = -fastsse -mcmodel=medium -traceback -Mbounds -Mchkfpstk -Mchkptr -Mchkstk -lnetcdff 
+ PGI_LDFLAGS = -fastsse -mcmodel=medium -lnetcdff 
+
+#INTEL_FFLAGS  = -O2 -cpp -auto -noalign -mcmodel=medium -shared-intel
+#INTEL_LDFLAGS = -O2 -cpp -auto -noalign -mcmodel=medium -shared-intel -lnetcdff 
+INTEL_FFLAGS  = -O2 -cpp -mcmodel=medium -shared-intel 
+INTEL_LDFLAGS = -O2 -cpp -mcmodel=medium -shared-intel -lnetcdff 
+#INTEL_FFLAGS  = -mcmodel=medium -shared-intel  -debug all
+#INTEL_LDFLAGS = -mcmodel=medium -shared-intel -lnetcdff  -debug all 
+################################################################
+
+            
+##############  You shouldn't need to change anything below here
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+BASENAME=$(EXECNAME)_$(COMPILER)
+
+ifeq ($(NETCDFVERSION), 4)
+  FPP_FLAGS=-DNETCDF4_OUTPUT
+endif
+
+ifeq ($(COMPILER), pgi)
+	FCSER      = pgf90 
+	FCOMP      = pgf90 -mp 
+	FCMPI      = mpif90 -mp 
+#        NETCDF = /apps/netcdf/4.1.3-pgi
+
+	FFLAGS      = -I${NETCDF}/include $(PGI_FFLAGS) $(FPP_FLAGS)
+ 	LDFLAGS     = -L${NETCDF}/lib $(PGI_LDFLAGS)
+  ISNAN_OBJ   = isnan_other.o
+  FPPFLAGS    = -Mpreprocess
+endif
+
+
+ifeq ($(COMPILER), gnu)
+	FCSER      = gfortran
+	FCOMP      = gfortran -fopenmp -lgomp
+	FCMPI      = mpif90 -fopenmp -lgomp 
+#        NETCDF = /apps/netcdf/4.1.3-pgi
+
+	FFLAGS    = -I${NETCDF}/include $(GNU_FFLAGS) $(FPP_FLAGS)
+	LDFLAGS   = -L${NETCDF}/lib $(GNU_LDFLAGS)
+  ISNAN_OBJ = isnan_gfortran.o
+  FPPFLAGS  = -cpp
+endif
+
+
+ifeq ($(COMPILER), intel)
+	FCSER      = ifort
+	FCOMP      = ifort -openmp
+	FCMPI      = mpiifort -openmp
+#        NETCDF = /apps/netcdf/4.1.3-intel
+
+	FFLAGS    = -I${NETCDF}/include $(INTEL_FFLAGS) $(FPP_FLAGS)
+	LDFLAGS   = -L${NETCDF}/lib $(INTEL_LDFLAGS)
+  ISNAN_OBJ = isnan_other.o 
+  FPPFLAGS  = -fpp
+endif
+
+
+# Old method:
+#NETCDF_OBJ = write_ncheader.o 	write_ncinfo.o \
+#ifeq ($(NETCDFVERSION), 3)
+#	NETCDF_OBJ = write_ncheader_v3.o	write_ncinfo_v3.o \
+#endif
+# New method to distinguish between netcdf3 and netcdf4 uses the pre-processors
+# bundled with the supported compilers.
+
+
+ifeq ($(MAKECMDGOALS),serial)
+	FC=$(FCSER)
+	MAIN=$(BASENAME)_serial
+        FFLAGS2=$(FFLAGS)
+        LDFLAGS2=$(LDFLAGS) 
+endif
+ifeq ($(MAKECMDGOALS),omp)
+	FC=$(FCOMP)
+	MAIN=$(BASENAME)_omp
+        FFLAGS2=$(FFLAGS)
+#        LDFLAGS2=$(LDFLAGS) -lpthread 
+        LDFLAGS2=$(LDFLAGS) 
+endif
+ifeq ($(MAKECMDGOALS),mpi)
+	FC=$(FCMPI)
+	MAIN=$(BASENAME)_mpi
+        FFLAGS2=$(FFLAGS) -I${MPI_ROOT}/include
+        LDFLAGS2=$(LDFLAGS) -lpthread -L${MPI_ROOT}/lib -lmpi
+endif
+
+
+
+#.SUFFIXES: .o .f90
+#
+#.f90.o:
+#	$(FC) -c $(FCFLAGS) $*.f90
+
+# In order to improve performance with parallel compilation, order modules by
+# dependency. (This is a sloppy way of doing it, but reduces the number of failed
+# dependencies, so that fewer attempts are needed to complete compilation)
+# Using this configuration we can typically complete the build by running
+#   make -j7 -f makefile.mom
+# twice. This is _much_ faster than running a serial job, even if a serial job
+# make would finish without any dependency issues on the first attempt.
+#
+# No dependency:
+# flux_mod.o hanna_mod.o kftable_mod.o mt_kind_defs.o oh_mod.o outg_mod.o par_mod.o point_mod.o ran_mod.o read_ncwrfout.o unc_mod.o wrf_map_utils_mod.o xmass_mod.o
+#
+# First order dependency (i.e. depends on one or more of the above):
+# cmapf_mod.o com_mod.o conv_mod.o interpol_mod.o mpi_mod.o mt_stream.o
+#
+# Second order dependency:
+# netcdf_output_mod.o
+MODOBJS = \
+flux_mod.o hanna_mod.o kftable_mod.o mt_kind_defs.o oh_mod.o outg_mod.o par_mod.o point_mod.o ran_mod.o read_ncwrfout.o unc_mod.o wrf_map_utils_mod.o xmass_mod.o \
+cmapf_mod.o com_mod.o conv_mod.o interpol_mod.o mpi_mod.o mt_stream.o \
+netcdf_output_mod.o
+
+
+#mt_kind_defs.o          ran_mod.o \
+#par_mod.o               com_mod.o \
+#conv_mod.o              hanna_mod.o \
+#interpol_mod.o          cmapf_mod.o \
+#unc_mod.o               oh_mod.o \
+#xmass_mod.o             flux_mod.o \
+#point_mod.o             outg_mod.o \
+#kftable_mod.o           wrf_map_utils_mod.o \
+#                        mpi_mod.o \
+#netcdf_output_mod.o     \
+#          mt_stream.o \
+#read_ncwrfout.o
+#
+OBJECTS = \
+assignland.o            writeheader.o \
+calcpar.o               part0.o \
+caldate.o               partdep.o \
+coordtrafo.o            psih.o \
+                        raerod.o \
+dynamic_viscosity.o     random.o \
+initial_cond_output.o   initial_cond_calc.o\
+outgrid_init_irreg.o    outgrid_init_reg.o\
+releaseparticles_irreg.o  releaseparticles_reg.o\
+conccalc_irreg.o        conccalc_reg.o\
+erf.o                   \
+ew.o                    \
+advance.o               readdepo.o \
+psim.o     \
+readlanduse.o \
+getfields.o             init_domainfill.o\
+interpol_wind.o         \
+interpol_all.o          ohreaction.o \
+getrb.o                 get_settling.o \
+getrc.o                 readohfield.o \
+getvdep.o               getvdep_nests.o \
+interpol_misslev.o      readwind.o \
+richardson.o \
+scalev.o \
+pbl_profile.o           \
+juldate.o               \
+interpol_vdep.o         interpol_rain.o \
+verttransform.o         partoutput.o \
+hanna.o                 wetdepokernel.o \
+mean.o                  wetdepo.o \
+hanna_short.o           windalign.o \
+obukhov.o               gridcheck.o \
+hanna1.o                initialize.o \
+cmapf1.0.o              \
+                        calcpar_nests.o \
+verttransform_nests.o   interpol_all_nests.o \
+interpol_wind_nests.o   interpol_misslev_nests.o \
+interpol_vdep_nests.o   interpol_rain_nests.o \
+readpartpositions.o \
+calcfluxes.o            fluxoutput.o \
+qvsat.o                 skplin.o \
+convmix.o               calcmatrix.o \
+convect43c.o               redist.o \
+sort2.o                 distance.o \
+centerofmass.o          plumetraj.o \
+openouttraj.o           calcpv.o \
+calcpv_nests.o          distance2.o \
+clustering.o            interpol_wind_short.o \
+interpol_wind_short_nests.o shift_field_0.o \
+shift_field.o           \
+openreceptors.o         boundcond_domainfill.o\
+gridcheck_nests.o \
+readwind_nests.o	\
+outgrid_init_nest_reg.o outgrid_init_nest_irreg.o \
+outgrid_init_nest.o     writeheader_nest.o \
+wetdepokernel_nest.o \
+drydepokernel_nest.o    drydepokernel.o \
+concoutput_irreg.o      concoutput_reg.o\
+concoutput_nest_irreg.o concoutput_nest_reg.o\
+map_proj_wrf.o \
+map_proj_wrf_subaa.o    readinput.o \
+tke_partition_hanna.o   tke_partition_my.o \
+redist_kf.o             pre_redist_kf.o\
+convection_kfeta.o      convmix_kfeta.o \
+readwind_timeav.o       readwind_nests_timeav.o  \
+gf2xe.o                 f_get_coeff.o \
+ranlux.o \
+initialize_cbl_vel.o \
+gasdevlux.o \
+cbl.o                   re_initialize_particle.o \
+#
+MPI_ONLY_OBJS = sendreal_mpi.o          senddouble_mpi.o \
+		sendint_mpi.o           sendint2_mpi.o \
+		sendreal2d_mpi.o	flexwrf_mpi.o  \
+		timemanager_mpi.o 	senddrydep_mpi.o \
+		senddrydep_nest_mpi.o \
+#
+SERIAL_ONLY_OBJS = flexwrf.o          timemanager_serial.o \
+#
+OMP_ONLY_OBJS = flexwrf.o          timemanager.o \
+
+
+serial: $(MODOBJS) $(OBJECTS) $(SERIAL_ONLY_OBJS) $(ISNAN_OBJ)
+#	echo 'Pure serial not supported - use omp'
+#	exit
+	$(FC) *.o -o $(MAIN) $(LDFLAGS2)
+
+omp: $(MODOBJS) $(OBJECTS) $(OMP_ONLY_OBJS) $(ISNAN_OBJ)
+	$(FC) *.o -o $(MAIN) $(LDFLAGS2)
+
+mpi: $(MODOBJS) $(OBJECTS) $(MPI_ONLY_OBJS) $(ISNAN_OBJ)
+	echo 'Compiling MPI'
+	$(FC) *.o -o $(MAIN) $(LDFLAGS2)
+
+$(OBJECTS): $(MODOBJS)
+$(MPI_ONLY_OBJECTS): $(MODOBJS)
+$(SERIAL_ONLY_OBJECTS): $(MODOBJS)
+
+%.o: %.f90
+	$(FC) -c $(FFLAGS2) $<
+
+# Included in for netcdf_output_mod.F90 (.F90 ensure the use of FPP)
+%.o: %.F90
+	$(FC) -c $(FPPFLAGS) $(FFLAGS2) $<
+
+# This is here because of a single source file, erf.f
+%.o: %.f
+	$(FC) -c $(FFLAGS2) $<
+
+clean:
+	rm *.o *.mod 
+

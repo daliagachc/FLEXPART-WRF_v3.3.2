@@ -1,0 +1,104 @@
+=====================FORMER PATHNAMES FILE===================
+/home/jerome/data/test1/
+/data1/wrf/wayne/
+/data1/wrf/wayne/AVAILABLE2
+=============================================================
+=====================FORMER COMMAND FILE=====================
+    1                LDIRECT:          1 for forward simulation, -1 for backward simulation
+    20100519 120000  YYYYMMDD HHMISS   beginning date of simulation
+    20100519 220000  YYYYMMDD HHMISS   ending date of simulation
+    3600             SSSSS  (int)      output every SSSSS seconds
+    3600             SSSSS  (int)      time average of output (in SSSSS seconds)
+    180              SSSSS  (int)      sampling rate of output (in SSSSS seconds)
+    999999999        SSSSS  (int)      time constant for particle splitting (in seconds)
+    180              SSSSS  (int)      synchronisation interval of flexpart (in seconds)
+    10.              CTL    (real)     factor by which time step must be smaller than tl
+    10               IFINE  (int)      decrease of time step for vertical motion by factor ifine
+    5                IOUT              1 concentration, 2 mixing ratio, 3 both, 4 plume traject, 5=1+4
+    0                IPOUT             particle dump: 0 no, 1 every output interval, 2 only at end
+    0                LSUBGRID          subgrid terrain effect parameterization: 1 yes, 0 no
+    3                LCONVECTION       convection: 3 yes, 0 no
+    3600.            DT_CONV  (real)   time interval to call convection, seconds
+    1                LAGESPECTRA       age spectra: 1 yes, 0 no
+    0                IPIN              continue simulation with dumped particle data: 1 yes, 0 no
+    0                IFLUX             calculate fluxes: 1 yes, 0 no
+    1                IOUTPUTFOREACHREL CREATE AN OUPUT FILE FOR EACH RELEASE LOCATION: 1 YES, 0 NO
+    0                MDOMAINFILL       domain-filling trajectory option: 1 yes, 0 no, 2 strat. o3 tracer
+    1                IND_SOURCE        1=mass unit , 2=mass mixing ratio unit
+    1                IND_RECEPTOR      1=mass unit , 2=mass mixing ratio unit
+    1                NESTED_OUTPUT     shall nested output be used? 1 yes, 0 no
+    0                LINIT_COND   INITIAL COND. FOR BW RUNS: 0=NO,1=MASS UNIT,2=MASS MIXING RATIO UNIT
+    1                TURB_OPTION       0=no turbulence; 1=diagnosed as in flexpart_ecmwf; 2 and 3=from tke.
+    0                LU_OPTION         0=old landuse (IGBP.dat); 1=landuse from WRF
+    0                CBL SCHEME        0=no, 1=yes. works if TURB_OPTION=1
+    1                SFC_OPTION        0=default computation of u*, hflux, pblh, 1=from wrf
+    1                WIND_OPTION       0=snapshot winds, 1=mean winds,2=snapshot eta-dot,-1=w based on divergence
+    1                TIME_OPTION       1=correction of time validity for time-average wind,  0=no need
+    1                OUTGRID_COORD     0=wrf grid(meters), 1=regular lat/lon grid
+    1                RELEASE_COORD     0=wrf grid(meters), 1=regular lat/lon grid
+    2                IOUTTYPE          0=default binary, 1=ascii (for particle dump only),2=netcdf
+    1                NCTIMEREC (int)   Time frames per output file, only used for netcdf
+    0                VERBOSE           VERBOSE MODE,0=minimum, 100=maximum
+=====================FORMER AGECLASESS FILE==================
+    2                NAGECLASS        number of age classes
+    7200             SSSSSS  (int)    age class in SSSSS seconds
+    999999           SSSSSS  (int)    age class in SSSSS seconds
+=====================FORMER OUTGRID FILE=====================
+   -123.00            OUTLONLEFT      geograhical longitude of lower left corner of output grid
+    38.0              OUTLATLOWER     geographical latitude of lower left corner of output grid
+    24               NUMXGRID        number of grid points in x direction (= # of cells )
+    28               NUMYGRID        number of grid points in y direction (= # of cells )
+    0                OUTGRIDDEF      outgrid defined 0=using grid distance, 1=upperright corner coordinate
+    0.1250           DXOUTLON        grid distance in x direction or upper right corner of output grid
+    0.1250           DYOUTLON        grid distance in y direction or upper right corner of output grid
+    3                NUMZGRID        number of vertical levels
+    100.0            LEVEL           height of level (upper boundary)
+   1000.0            LEVEL           height of level (upper boundary)
+  20000.0            LEVEL           height of level (upper boundary)
+================OUTGRID_NEST==========================
+   -123.             OUTLONLEFT      geograhical longitude of lower left corner of output grid
+    38.00             OUTLATLOWER     geographical latitude of lower left corner of output grid
+    24               NUMXGRID        number of grid points in x direction (= # of cells )
+    28               NUMYGRID        number of grid points in y direction (= # of cells )
+    0                OUTGRIDDEF      outgrid defined 0=using grid distance, 1=upperright corner coordinate
+    0.125            DXOUTLON        grid distance in x direction or upper right corner of output grid
+    0.125            DYOUTLON        grid distance in y direction or upper right corner of output grid
+=====================FORMER RECEPTOR FILE====================
+    0                NUMRECEPTOR     number of receptors
+=====================FORMER SPECIES FILE=====================
+     2               NUMTABLE        number of variable properties. The following lines are fixed format
+XXXX|NAME    |decaytime |wetscava  |wetsb|drydif|dryhenry|drya|partrho  |parmean|partsig|dryvelo|weight |
+    AIRTRACER     -999.9   -9.9E-09         -9.9                 -9.9E09                   -9.99   29.00
+    Cs-137        -999.9    1.0E-04  0.80   -9.9                  2.5E03  6.0E-7  3.0E-1   -9.99   -9.99
+=====================FORMER RELEEASES FILE===================
+   2                NSPEC           total number of species emitted
+   0                EMITVAR         1 for emission variation 
+   1                LINK            index of species in file SPECIES
+   1                LINK            index of species in file SPECIES
+2                 NUMPOINT        number of releases
+20100519 120000   ID1, IT1        beginning date and time of release
+20100519 130000   ID2, IT2        ending date and time of release
+-123.0000         XPOINT1 (real)  longitude [deg] of lower left corner
+  40.3000         YPOINT1 (real)  latitude [deg] of lower left corner
+-122.6000         XPOINT2 (real)  longitude [deg] of upper right corner
+  40.6000         YPOINT2 (real)  latitude [DEG] of upper right corner
+        1         KINDZ  (int)  1 for m above ground, 2 for m above sea level, 3 pressure
+   100.000        ZPOINT1 (real)  lower z-level
+  1000.000        ZPOINT2 (real)  upper z-level
+  500             NPART (int)     total number of particles to be released
+.1000E+04         XMASS (real)    total mass emitted
+.1000E+04         XMASS (real)    total mass emitted
+box1              NAME OF RELEASE LOCATION
+20100519 120000
+20100519 130000
+-122.0000
+  38.3000
+-121.6000
+  38.6000
+        1
+   100.000
+  1000.000
+  500   
+.5000E+04
+.1000E+04
+box2
