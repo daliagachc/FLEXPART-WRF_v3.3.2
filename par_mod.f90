@@ -158,7 +158,8 @@ module par_mod
   !*********************************************
 
   !integer,parameter :: maxnests=0, nxmaxn=0, nymaxn=0
-   integer,parameter :: maxnests=2,nxmaxn=400,nymaxn=283
+  !integer,parameter :: maxnests=2,nxmaxn=400,nymaxn=283
+  integer,parameter :: maxnests=4,nxmaxn=400,nymaxn=283
   !integer,parameter :: maxnests=1,nxmaxn=312,nymaxn=312
 
   ! maxnests                maximum number of nested grids

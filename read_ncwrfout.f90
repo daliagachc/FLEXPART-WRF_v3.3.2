@@ -141,7 +141,9 @@ else
         cache_idx_tail = 1
     endif
     ! - handle the case that the cache has filled up, but closing the oldest file 
-    if (cache_idx_head - cache_idx_tail .ge. cache_size-1) then
+!    if (cache_idx_head - cache_idx_tail .ge. cache_size-1) then
+    ! added by diego 2019-05-23_18-26-57_ to fix the 96 files input limit.
+     if (cache_idx_head - cache_idx_tail .gt. cache_size-1) then
         ii_wrapped = 1+mod(cache_idx_head-1, cache_size)
         iret = nf_close( cached_ncid(ii_wrapped) )
         if (iret .ne. nf_noerr) then
