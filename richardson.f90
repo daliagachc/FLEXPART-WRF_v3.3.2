@@ -96,7 +96,7 @@
   integer,parameter :: itmax=3
 
   real :: duma
-  integer :: sfc_option
+  integer :: sfc_option,option_verbose
 
       excess=0.0
       iter=0
