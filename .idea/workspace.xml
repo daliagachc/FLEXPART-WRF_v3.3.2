@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4b92df23-1b44-4d02-b04c-85775241ed0c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readwind.f90" beforeDir="false" afterPath="$PROJECT_DIR$/readwind.f90" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readwind_nests.f90" beforeDir="false" afterPath="$PROJECT_DIR$/readwind_nests.f90" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readwind_nests_timeav.f90" beforeDir="false" afterPath="$PROJECT_DIR$/readwind_nests_timeav.f90" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readwind_timeav.f90" beforeDir="false" afterPath="$PROJECT_DIR$/readwind_timeav.f90" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timemanager.f90" beforeDir="false" afterPath="$PROJECT_DIR$/timemanager.f90" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timemanager_mpi.f90" beforeDir="false" afterPath="$PROJECT_DIR$/timemanager_mpi.f90" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timemanager_serial.f90" beforeDir="false" afterPath="$PROJECT_DIR$/timemanager_serial.f90" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/richardson.f90" beforeDir="false" afterPath="$PROJECT_DIR$/richardson.f90" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,19 +13,23 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/flexwrf.f90">
+        <entry file="file://$PROJECT_DIR$/compile_flexpart.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="287" column="12" selection-start-line="287" selection-start-column="12" selection-end-line="287" selection-end-column="12" />
+            <state relative-caret-position="210">
+              <caret line="14" column="15" selection-start-line="14" selection-start-column="15" selection-end-line="14" selection-end-column="15" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/compile_flexpart.sh">
+        <entry file="file://$PROJECT_DIR$/richardson.f90">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
+            <state relative-caret-position="463">
+              <caret line="198" column="14" selection-start-line="198" selection-start-column="14" selection-end-line="198" selection-end-column="14" />
+              <folding>
+                <marker date="1558816404770" expanded="true" signature="8939:8965" ph="..." />
+                <marker date="1558816404770" expanded="true" signature="8971:8978" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -80,6 +76,7 @@
       <find>debu</find>
       <find>option_verbose.</find>
       <find>option_verbose.eq.1</find>
+      <find>richardson not working</find>
     </findStrings>
     <replaceStrings>
       <replace>option_verbose.ge.1</replace>
@@ -98,6 +95,8 @@
         <option value="$PROJECT_DIR$/read_ncwrfout.f90" />
         <option value="$PROJECT_DIR$/compile/compile_flexpart.sh" />
         <option value="$PROJECT_DIR$/readwind_timeav.f90" />
+        <option value="$PROJECT_DIR$/compile_flexpart.sh" />
+        <option value="$PROJECT_DIR$/richardson.f90" />
       </list>
     </option>
   </component>
@@ -188,12 +187,12 @@
       <workItem from="1558648343292" duration="3982000" />
       <workItem from="1558729008325" duration="1369000" />
       <workItem from="1558799576872" duration="590000" />
-      <workItem from="1558807033990" duration="4738000" />
+      <workItem from="1558807033990" duration="5823000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10679000" />
+    <option name="totallyTimeSpent" value="11764000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="0" />
@@ -206,7 +205,7 @@
       <window_info id="Structure" order="4" sideWeight="0.48464912" side_tool="true" visible="true" weight="0.2802198" />
       <window_info active="true" content_ui="combo" id="Project" order="5" sideWeight="0.5153509" visible="true" weight="0.2802198" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.32894737" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32894737" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32870865" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -214,7 +213,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32997987" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32894737" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.32894737" />
       <window_info anchor="bottom" id="DB Execution Console" order="10" />
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
@@ -296,8 +295,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/compile_flexpart.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="210">
+          <caret line="14" column="15" selection-start-line="14" selection-start-column="15" selection-end-line="14" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/richardson.f90">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="463">
+          <caret line="198" column="14" selection-start-line="198" selection-start-column="14" selection-end-line="198" selection-end-column="14" />
+          <folding>
+            <marker date="1558816404770" expanded="true" signature="8939:8965" ph="..." />
+            <marker date="1558816404770" expanded="true" signature="8971:8978" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

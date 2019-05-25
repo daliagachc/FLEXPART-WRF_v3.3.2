@@ -195,6 +195,22 @@
 !         write(*,*) 'richardson not working -- too small h =', h
 !         ierr = +20
 !         return
+          if(option_verbose.eq.100) then
+              write(*,'(a         )') 'nuvz'
+              write(*,'(i5        )')  nuvz
+              write(*,'(a         )') 'psurf,ust,hf,tt2,td2,h,wst,hmixplus'
+              write(*,'(1p,4e18.10)')  psurf,ust,hf,tt2,td2,h,wst,hmixplus
+              write(*,'(a         )') 'ttlev'
+              write(*,'(1p,4e18.10)')  ttlev
+              write(*,'(a         )') 'qvlev'
+              write(*,'(1p,4e18.10)')  qvlev
+              write(*,'(a         )') 'ulev'
+              write(*,'(1p,4e18.10)')  ulev
+              write(*,'(a         )') 'vlev'
+              write(*,'(1p,4e18.10)')  vlev
+              write(*,'(a         )') 'pplev'
+              write(*,'(1p,4e18.10)')  pplev
+          end if
       end if
       
       thetam=0.5*(theta1+theta2)
