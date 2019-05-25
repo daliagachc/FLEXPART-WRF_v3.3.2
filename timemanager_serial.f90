@@ -691,7 +691,7 @@
 !        call itime(now)
 !        ttime=now(1)*3600+now(2)*60+now(3)-ttime
 !      print*,'time',ttime,cpttra,myid,OMP_GET_THREAD_NUM()
-             if (option_verbose.eq.1) then
+             if (option_verbose.ge.1) then
   call system_clock(clck_counts_end,clck_rate)
   tins2=real(clck_counts_end - clck_counts_beg)/real(clck_rate)
        print*,'time',tins2,cpttra,myid,ompid
