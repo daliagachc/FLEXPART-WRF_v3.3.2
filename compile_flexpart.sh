@@ -11,5 +11,5 @@ opt=serial
 #tar xvf flexpart_wrf_${version}.tar.gz
 #mv Src_flexwrf_v${version} Src_flexwrf_v${version}-${opt}
 #cd Src_flexwrf_v${version}-${opt}
-
+make -f makefile.mom clean
 make -f makefile.mom $opt NETCDF=$(nc-config --prefix)
