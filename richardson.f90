@@ -96,7 +96,7 @@
   integer,parameter :: itmax=3
 
   real :: duma
-  integer :: sfc_option,option_verbose
+  integer :: sfc_option
 
       excess=0.0
       iter=0
@@ -195,7 +195,8 @@
 !         write(*,*) 'richardson not working -- too small h =', h
 !         ierr = +20
 !         return
-          if(option_verbose.eq.100) then
+          ! added by diego
+          if(100.eq.100) then
               write(*,'(a         )') 'nuvz'
               write(*,'(i5        )')  nuvz
               write(*,'(a         )') 'psurf,ust,hf,tt2,td2,h,wst,hmixplus'

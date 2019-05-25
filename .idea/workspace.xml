@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4b92df23-1b44-4d02-b04c-85775241ed0c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/richardson.f90" beforeDir="false" afterPath="$PROJECT_DIR$/richardson.f90" afterDir="false" />
-    </list>
+    <list default="true" id="4b92df23-1b44-4d02-b04c-85775241ed0c" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,11 +22,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/richardson.f90">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="463">
-              <caret line="198" column="14" selection-start-line="198" selection-start-column="14" selection-end-line="198" selection-end-column="14" />
+            <state relative-caret-position="362">
+              <caret line="98" column="38" selection-start-line="98" selection-start-column="38" selection-end-line="98" selection-end-column="38" />
               <folding>
-                <marker date="1558816404770" expanded="true" signature="8939:8965" ph="..." />
-                <marker date="1558816404770" expanded="true" signature="8971:8978" ph="..." />
+                <marker date="1558816542546" expanded="true" signature="8954:9656" ph="..." />
+                <marker date="1558816542546" expanded="true" signature="9662:9669" ph="..." />
               </folding>
             </state>
           </provider>
@@ -187,12 +185,12 @@
       <workItem from="1558648343292" duration="3982000" />
       <workItem from="1558729008325" duration="1369000" />
       <workItem from="1558799576872" duration="590000" />
-      <workItem from="1558807033990" duration="5823000" />
+      <workItem from="1558807033990" duration="6100000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11764000" />
+    <option name="totallyTimeSpent" value="12041000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="0" />
@@ -302,11 +300,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/richardson.f90">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="463">
-          <caret line="198" column="14" selection-start-line="198" selection-start-column="14" selection-end-line="198" selection-end-column="14" />
+        <state relative-caret-position="362">
+          <caret line="98" column="38" selection-start-line="98" selection-start-column="38" selection-end-line="98" selection-end-column="38" />
           <folding>
-            <marker date="1558816404770" expanded="true" signature="8939:8965" ph="..." />
-            <marker date="1558816404770" expanded="true" signature="8971:8978" ph="..." />
+            <marker date="1558816542546" expanded="true" signature="8954:9656" ph="..." />
+            <marker date="1558816542546" expanded="true" signature="9662:9669" ph="..." />
           </folding>
         </state>
       </provider>
