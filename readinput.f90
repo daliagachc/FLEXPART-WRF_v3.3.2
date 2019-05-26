@@ -577,7 +577,8 @@ subroutine readinput
     write(*,*) ' #### FLEXPART MODEL ERROR! SFC_OPTION =',sfc_option
     write(*,*) ' #### Reading from WRF no longer supported.'
     write(*,*) ' #### ---------------------------------'
-    stop
+    write(*,*) 'be careful option added by diego      '
+!    stop
   else
     write(*,*) ' #### FLEXPART MODEL ERROR!                   #### '
     write(*,*) ' #### SFC_OPTION MUST BE ONE OF:              #### '
