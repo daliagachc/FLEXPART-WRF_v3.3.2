@@ -152,6 +152,9 @@
         thetaold=theta
       zold=z
   end do
+  ! fix bug ticket:139 as follows:
+  print*,'Warning - in richardson.f90, no Ri_c found'
+  k = nuvz
 
         if (k .ge. nuvz) then
             write(*,*) 'richardson not working -- k = nuvz'
@@ -187,23 +190,7 @@
 !JB
 !     h=zl
       if(sfc_option .eq. sfc_option_diagnosed) h=zl
-      ! added by diego
-      if(100.eq.100) then
-          write(*,'(a         )') 'nuvz'
-          write(*,'(i5        )')  nuvz
-          write(*,'(a         )') 'psurf,ust,hf,tt2,td2,h,wst,hmixplus'
-          write(*,'(1p,4e18.10)')  psurf,ust,hf,tt2,td2,h,wst,hmixplus
-          write(*,'(a         )') 'ttlev'
-          write(*,'(1p,4e18.10)')  ttlev
-          write(*,'(a         )') 'qvlev'
-          write(*,'(1p,4e18.10)')  qvlev
-          write(*,'(a         )') 'ulev'
-          write(*,'(1p,4e18.10)')  ulev
-          write(*,'(a         )') 'vlev'
-          write(*,'(1p,4e18.10)')  vlev
-          write(*,'(a         )') 'pplev'
-          write(*,'(1p,4e18.10)')  pplev
-      end if
+
       if (h .le. 0.0) then
           write(*,*) 'richardson not working -- bad h =', h
           ierr = -20
