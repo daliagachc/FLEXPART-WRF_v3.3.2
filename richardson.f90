@@ -154,7 +154,9 @@
   end do
   ! fix bug ticket:139 as follows:
   print*,'Warning - in richardson.f90, no Ri_c found'
-  k = nuvz
+!  k = nuvz
+!  this was added by diego to prevent Ri_c not found from stopping the simulation
+   k = nuvz - 1
 
         if (k .ge. nuvz) then
             write(*,*) 'richardson not working -- k = nuvz'
