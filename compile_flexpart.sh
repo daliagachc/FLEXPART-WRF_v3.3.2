@@ -14,7 +14,7 @@ opt=mpi
 make -f makefile.mom clean
 make -f makefile.mom $opt NETCDF=$(nc-config --prefix)
 
-opt=serial
+opt=omp
 
 make -f makefile.mom clean
 make -f makefile.mom $opt NETCDF=$(nc-config --prefix)

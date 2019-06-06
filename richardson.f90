@@ -154,6 +154,7 @@
   end do
   ! fix bug ticket:139 as follows:
   print*,'Warning - in richardson.f90, no Ri_c found'
+  print*,'simulation will continue but we dont know the implications. Diego. setting k = nuvz-1'
 !  k = nuvz
 !  this was added by diego to prevent Ri_c not found from stopping the simulation
    k = nuvz - 1
