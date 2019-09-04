@@ -197,7 +197,8 @@
           ulev,vlev,nuvz,  pplev,sshf(ix,jy,1,n),tt2(ix,jy,1,n), &
           td2(ix,jy,1,n),hmix(ix,jy,1,n),wstar(ix,jy,1,n),hmixplus, &
 !         td2(ix,jy,1,n),hmixdummy,wstar(ix,jy,1,n),hmixplus, &
-          ierr,sfc_option )
+          ierr,sfc_option, &
+          xlon, ylat )
 !JB
 ! no reflec
 !         hmix(ix,jy,1,n)=5000.

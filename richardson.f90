@@ -21,7 +21,7 @@
 !* along with FLEXPART.  If not, see <http://www.gnu.org/licenses/>.   *
 !***********************************************************************
       subroutine richardson(psurf,ust,ttlev,qvlev,ulev,vlev,nuvz, &
-        pplev,hf,tt2,td2,h,wst,hmixplus,ierr,sfc_option)
+        pplev,hf,tt2,td2,h,wst,hmixplus,ierr,sfc_option, xlon, ylat )
 !     subroutine richardson(psurf,ust,ttlev,qvlev,ulev,vlev,nuvz,
 !    +akz,bkz,hf,tt2,td2,h,wst,hmixplus,ierr)
 
@@ -91,6 +91,7 @@
   real :: psurf,ust,ttlev(nuvz),qvlev(nuvz),h,excess
   real :: thetaold,zl,ul,vl,thetal,ril,hmixplus,wspeed,bvfsq,bvf
   real :: f_qvsat,rh,rhold,rhl,theta1,theta2,zl1,zl2,thetam
+  real :: xlon, ylat
 
   real,parameter    :: const=r_air/ga, ric=0.25, b=100., bs=8.5
   integer,parameter :: itmax=3
@@ -107,8 +108,8 @@
 
 30    iter=iter+1
 
-      !diego
-      ierr = 0
+      !Diego
+!      ierr = 0
 
       pold=psurf
       tvold=tt2*(1.+0.378*ew(td2)/psurf)
@@ -156,10 +157,27 @@
         zold=z
       end do
     ! fix bug ticket:139 as follows:
-    print*,'Warning - in richardson.f90, no Ri_c found'
-    print*,'simulation will continue but we dont know the implications. Diego. setting k = nuvz-1'
+    print*,'Warning - in richardson.f90, no Ri_c found &
+    simulation will continue but we dont know the implications. Diego. setting k = nuvz-1'
+    write(*,'(a         )') 'xlon, ylat = '
+    write(*,'(1p,4e18.10)') xlon,ylat
+
+    write(*,'(a         )') 'nuvz'
+    write(*,'(i5        )')  nuvz
+    write(*,'(a         )') 'psurf,ust,hf,tt2,td2,h,wst,hmixplus'
+    write(*,'(1p,4e18.10)')  psurf,ust,hf,tt2,td2,h,wst,hmixplus
+    write(*,'(a         )') 'ttlev'
+    write(*,'(1p,4e18.10)')  ttlev
+    write(*,'(a         )') 'qvlev'
+    write(*,'(1p,4e18.10)')  qvlev
+    write(*,'(a         )') 'ulev'
+    write(*,'(1p,4e18.10)')  ulev
+    write(*,'(a         )') 'vlev'
+    write(*,'(1p,4e18.10)')  vlev
+    write(*,'(a         )') 'pplev'
+    write(*,'(1p,4e18.10)')  pplev
    !  k = nuvz
-   !  this was added by diego to prevent Ri_c not found from stopping the simulation
+   !  this was added by Diego to prevent Ri_c not found from stopping the simulation
    k = nuvz - 1
 
         if (k .ge. nuvz) then
@@ -237,7 +255,7 @@
         wst=0.
       endif
 
-!      ierr = 0
+      ierr = 0
       return
 
 ! Fatal error -- print the inputs

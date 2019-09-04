@@ -28,7 +28,7 @@
 !    SUBROUTINE READ_NCWRFOUT_GRIDINFO                                         *
 !    SUBROUTINE READ_NCWRFOUT_1REALFIELD                                       *
 !    SUBROUTINE READ_NCWRFOUT_1DATETIME                                        *
-!                                                                              * 
+!                                                                              *
 ! These routines read the netcdf wrf output files.                             *
 !                                                                              *
 !*******************************************************************************
@@ -42,9 +42,9 @@
 !                                                                              *
 !  Feb 2014, A. Griffiths:                                                     *
 !             bug fix line 780                                                 *
-!                                                                              * 
-!  Mar 2014, A. Griffiths:                                                     * 
-!             use of cache to read NetCDF files                                * 
+!                                                                              *
+!  Mar 2014, A. Griffiths:                                                     *
+!             use of cache to read NetCDF files                                *
 !                                                                              *
 !  2015-03-26, A. Dingwell:                                                    *
 !             Cleaned up indentation in read_ncwrfout_gridinfo, it now follows *
@@ -98,14 +98,14 @@ integer :: iret
 ierr = 0
 in_cache = .false.
 if (cache_debug) then
-   print *, 'looking for ', trim(fnamenc), ' in cache' 
+   print *, 'looking for ', trim(fnamenc), ' in cache'
    print *, 'cache size:', cache_idx_head - cache_idx_tail
    if ( cache_idx_head - cache_idx_tail > 0) then
        print *, 'current contents:'
        do ii = cache_idx_head, cache_idx_tail, -1
            ii_wrapped = 1+mod(ii-1, cache_size)
            print *, ii, ii_wrapped, '|', trim(cached_fnamenc(ii_wrapped)), '|'
-       enddo 
+       enddo
    endif
 endif
 !check if file 'fnamenc' is in the cache
@@ -140,9 +140,9 @@ else
     if (cache_idx_tail .eq. 0) then
         cache_idx_tail = 1
     endif
-    ! - handle the case that the cache has filled up, but closing the oldest file 
+    ! - handle the case that the cache has filled up, but closing the oldest file
 !    if (cache_idx_head - cache_idx_tail .ge. cache_size-1) then
-    ! added by diego 2019-05-23_18-26-57_ to fix the 96 files input limit.
+    ! added by Diego 2019-05-23_18-26-57_ to fix the 96 files input limit.
      if (cache_idx_head - cache_idx_tail .gt. cache_size-1) then
         ii_wrapped = 1+mod(cache_idx_head-1, cache_size)
         iret = nf_close( cached_ncid(ii_wrapped) )
@@ -158,7 +158,7 @@ else
     if (cache_idx_head > cache_size .and. cache_idx_tail > cache_size) then
         cache_idx_head = cache_idx_head - cache_size
         cache_idx_tail = cache_idx_tail - cache_size
-    endif    
+    endif
 
     cached_fnamenc(ii_wrapped) = fnamenc
     cached_ncid(ii_wrapped) = ncid
@@ -181,7 +181,7 @@ subroutine read_ncwrfout_gridinfo( ierr, idiagaa, fnamenc, &
 !   reads grid definition information from a netcdf wrf output file
 !
 !   arguments
-! ierr                output  if non-zero, an error occurred 
+! ierr                output  if non-zero, an error occurred
 !                             while opening or reading from the file
 ! idiagaa             input   if positive, testing diagnostics are printed
 ! fnamenc             input   path+filename of the wrf output file
@@ -230,7 +230,7 @@ subroutine read_ncwrfout_gridinfo( ierr, idiagaa, fnamenc, &
   integer :: i, iatt, idimid_unlim, idum, iret, ivtype
   integer :: l, lenatt, lendim(maxdim)
   integer :: natts_tot, ncid, ndims_tot, nvars_tot
-  integer :: n_west_east_stag, n_south_north_stag, n_bottom_top_stag 
+  integer :: n_west_east_stag, n_south_north_stag, n_bottom_top_stag
 
   real :: duma
   real, allocatable, dimension(:) :: duma_alloc
@@ -288,7 +288,7 @@ subroutine read_ncwrfout_gridinfo( ierr, idiagaa, fnamenc, &
         'file = ', a )
 
 90030  format( a, 2i6, 2(2x,a) )
-  
+
 !
 ! get information on dimensions
 !
@@ -370,10 +370,10 @@ subroutine read_ncwrfout_gridinfo( ierr, idiagaa, fnamenc, &
 	do iatt = 1, natts_tot
     iret = nf_inq_attname( ncid, nf_global, iatt, attname)
     if (iret .ne. nf_noerr) goto 3600
-    
+
     iret = nf_inq_att( ncid, nf_global, attname, ivtype, lenatt )
     if (iret .ne. nf_noerr) goto 3600
-    
+
     if (ivtype .eq. 2) then
       iret = nf_get_att_text( ncid, nf_global, attname, dumch1000 )
       if (iret .ne. nf_noerr) goto 3600
@@ -471,11 +471,11 @@ end subroutine read_ncwrfout_gridinfo
 !	the date & time of the "itime" data group in the file.
 !
 !   arguments
-!	ierr - output - if non-zero, an error occurred 
+!	ierr - output - if non-zero, an error occurred
 !		while opening or reading from the file,
 !		or itime < 0, or itime > number of times in the file.
 !	fnamenc - input - path+filename of the wrf output file
-!	itime - input - specifies which data/time to return.  
+!	itime - input - specifies which data/time to return.
 !		1 for first, 2 for second, ...
 !	jyyyymmdd - output - date as 8 decimal digits (yyyymmdd).
 !		yyyy=year, mm=month, dd=day of month.
@@ -548,7 +548,7 @@ endif
         'file = ', a )
 
 90030  format( a, 2i6, 2(2x,a) )
-  
+
 !
 ! get information on the variable
 !
@@ -674,7 +674,7 @@ endif
 !   reads of real (single precision) field at one time from a netcdf wrf output file
 !
 !   arguments
-!	ierr - output - if non-zero, an error occurred 
+!	ierr - output - if non-zero, an error occurred
 !		while opening or reading from the file
 !		 -1 = error opening file
 !		 -2 = requested variable is not in the file
@@ -685,11 +685,11 @@ endif
 !	fnamenc - input - path+filename of the wrf output file
 !	varname - input - field name
 !	vardata - output - the data for the field
-!	itime - input - specifies which time to read.  
+!	itime - input - specifies which time to read.
 !		(1 for first time in the file, 2 for second, ...)
-!	ndims - output - number of (netcdf) dimensions of the field.  
+!	ndims - output - number of (netcdf) dimensions of the field.
 !		This includes the time dimension.
-!	ndims_exp - input - expected number of dimensions of the field.  
+!	ndims_exp - input - expected number of dimensions of the field.
 !		An error occurs if ndims .ne. ndims_exp.
 !	ndims_max - input - The dimension/size of the lendim_... arrays.
 !	lendim - output - The size of each of the "ndims" dimensions.
@@ -763,7 +763,7 @@ else
 end if
 
 9100  format( / '*** read_ncwrfout_1realfield -- ', a / &
-        'file = ', a ) 
+        'file = ', a )
 9110  format( / '*** read_ncwrfout_1realfield -- ', a, 1x, i8 / &
         'file = ', a )
 9120  format( / '*** read_ncwrfout_1realfield -- ', a, 2(1x,i8) / &
@@ -778,7 +778,7 @@ end if
         'file = ', a )
 
 90030  format( a, 2i6, 2(2x,a) )
-  
+
 !
 ! get information on the variable
 !
@@ -814,7 +814,8 @@ end if
 	    ierr = -11
 	    goto 8100
 	end if
-	if (ndims .ne. ndims_exp) then
+    !Diego: reduce clutter in output file
+	if ((ndims .ne. ndims_exp) .and. (varname .ne. 'CLDFRA'))  then
 	    write(*,9125) 'var ndims mismatch for ' // varname,  &
       		'ndims_exp, ndims =', ndims_exp, ndims, fnamenc
 	    ierr = -12
@@ -844,7 +845,7 @@ end if
 	    end if
 	    if ((i .lt. ndims_exp) .and. (lendim_exp(i) .gt. 0) .and.  &
       	        (lendim(i) .ne. lendim_exp(i))) then
-!           print*,i,ndims_exp,lendim_exp(i),lendim(i),lendim_exp(i) 
+!           print*,i,ndims_exp,lendim_exp(i),lendim(i),lendim_exp(i)
 		write(*,9130) 'var lendim mismatch for ' // varname,  &
       		    i, lendim_exp(i), lendim(i), fnamenc
 		ierr = -16
@@ -857,7 +858,7 @@ end if
 		ierr = -17
 		goto 8100
 	    end if
-	    if ((i .eq. ndims_exp) .and. (lendim(i) .lt. itime)) then  
+	    if ((i .eq. ndims_exp) .and. (lendim(i) .lt. itime)) then
 		write(*,9130) 'var itime < ntimes for ' // varname,  &
       		    i, itime, lendim(i), fnamenc
 		ierr = -18
@@ -934,7 +935,7 @@ end if
 	end do
 
 deallocate(vardata_temp)
-        
+
 !        print*,'value in',lendim_use, lendim_max
         ! if ndims_exp .eq. 1 then it's a scalar variable (e.g. P_TOP) and
         ! doesn't need reorder
@@ -973,8 +974,8 @@ deallocate(vardata_temp)
       	  varname, vardata_in, vardata_out, &
       	  lendim_use, lendim_max )
 !
-!   reorders a real (single precision) field 
-!	the nf_get_vara_real loads the data for a field into 
+!   reorders a real (single precision) field
+!	the nf_get_vara_real loads the data for a field into
 !	    a contiguous block of memory starting at vardata(1,1,1)
 !	it does not know if perhaps lendim() < lendim_max()
 !	this routine corrects for that, so that the data are
@@ -988,7 +989,7 @@ deallocate(vardata_temp)
 !	vardata_in  - input  - the data for the field
 !	vardata_out - output - the data for the field
 !		In the calling program, vardata_in & vardata_out are usually
-!		the same array.  This routine "pretends" that they are 
+!		the same array.  This routine "pretends" that they are
 !		different, and specifies their dimensions differently,
 !		to facilitate the reordering.
 !

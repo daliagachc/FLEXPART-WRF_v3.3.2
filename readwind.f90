@@ -24,22 +24,22 @@
 
       subroutine readwind(indj,n,uuh,vvh,wwh,divh)
 !**********************************************************************
-!                                                                     * 
+!                                                                     *
 !             TRAJECTORY MODEL SUBROUTINE READWIND                    *
 !                                                                     *
 !**********************************************************************
-!                                                                     * 
+!                                                                     *
 ! AUTHOR:      G. WOTAWA                                              *
 ! DATE:        1997-08-05                                             *
 ! LAST UPDATE: 2000-10-17, Andreas Stohl                              *
-!                                                                     * 
+!                                                                     *
 ! Bernd C. Krueger, Feb. 2001:  Variables tth and qvh                 *
 !                               (on eta coordinates) in common block  *
-!                                                                     * 
+!                                                                     *
 ! Oct-Dec, 2005: R. Easter.  Major changes for WRF.                   *
-!    06-nov-2005 rce - change uuh,vvh dimension back to original      * 
-!    16-nov-2005 rce - zzh is shifted like pph,tth                    * 
-!                                                                     * 
+!    06-nov-2005 rce - change uuh,vvh dimension back to original      *
+!    16-nov-2005 rce - zzh is shifted like pph,tth                    *
+!                                                                     *
 !    11-June-2007,   W.WANG -- read TKE, change ndims_exp=1 for P_TOP
 !    19-Oct -2007,             read tcc, RAINC, RAINNC, CLDFRA,W0AVG
 !                              Note RAINC, RAINNC are accumulated prec
@@ -52,11 +52,11 @@
 ! we simply skip this condition and consider the maximum fraction
 ! no more reading of CLDFRA needed, initialized to 0.
 ! Same modifications for the nested domains!
-!                                                                     * 
+!                                                                     *
 !  2015-03-26, A. Dingwell:                                           *
 !             Updated calls to read_ncwrfout_gridinfo to match updates*
-!             in that subroutine.                                     * 
-!                                                                     * 
+!             in that subroutine.                                     *
+!                                                                     *
 !**********************************************************************
 !                                                                     *
 ! Note:  This is the FLEXPART_WRF version of subroutine readwind.     *
@@ -171,7 +171,7 @@
       idiagaa = 0
 
       call read_ncwrfout_gridinfo( ierr, idiagaa, fnamenc, &
-        n_west_east, n_south_north, n_bottom_top, & 
+        n_west_east, n_south_north, n_bottom_top, &
         dx_met, dy_met,  &
         m_grid_id_dum, m_parent_grid_id_dum, m_parent_grid_ratio_dum, &
         i_parent_start_dum, j_parent_start_dum, &
@@ -263,20 +263,20 @@
           write(*,9125) 'unable to locate date/time in met file',  &
               'indj, itime =', indj, itime, fnamenc
           stop
-      else 
+      else
           jul = juldate( jyyyymmdd, jhhmmss )
           duma = (jul-bdate)*86400.
           iduma = nint(duma)
           if (iduma .ne. wftime(indj)) goto 1100
       end if
       if (option_verbose.ge.1) then
-      write(*,*) 
+      write(*,*)
       write(*,*) 'readwind processing wrfout file ='
       write(*,*) fnamenc
       write(*,*) 'itime, ymd, hms =', itime, jyyyymmdd, jhhmmss
 
       endif
-! read eta_w_wrf, eta_u_wrf, p_top_wrf, ylat2d, xlon2d from the 
+! read eta_w_wrf, eta_u_wrf, p_top_wrf, ylat2d, xlon2d from the
 ! netcdf wrfout file and compare to those from the 1st met. file
 
       varname = 'ZNW'
@@ -298,7 +298,7 @@
           varname, dumarray_aa, &
           itime, &
           ndims, ndims_exp, ndims_max, &
-          lendim, lendim_exp, lendim_max )  
+          lendim, lendim_exp, lendim_max )
 
       if (ierr .ne. 0) then
           write(*,9100) 'error doing ncread of ZNW', fnamenc
@@ -423,13 +423,13 @@
 !       V VELOCITY
 !       W VELOCITY
 !       TEMPERATURE
-!       SPEC. HUMIDITY  
+!       SPEC. HUMIDITY
 !       SURF. PRESS.
 !       SEA LEVEL PRESS.
 !       10 M U VELOCITY
 !       10 M V VELOCITY
 !       2 M TEMPERATURE
-!       2 M DEW POINT  
+!       2 M DEW POINT
 !       SNOW DEPTH
 !       CLOUD COVER
 !       LARGE SCALE PREC.
@@ -517,7 +517,7 @@
       endif !test on time_option
 
 ! w wind velocity
-!   this is on the "W-grid", and 
+!   this is on the "W-grid", and
 !   the wrf output file contains nwz levels, so no shifting needed
       if (wind_option.le.0) varname = 'W'
       if (wind_option.eq.1) varname = 'AVGFLX_WWM'
@@ -584,7 +584,7 @@
 
 ! height - read base state and perturbation geopotential,
 !     then combine and divide by gravity
-!   these are on the "W-grid", and 
+!   these are on the "W-grid", and
 !     the wrf output file contains nwz levels
 !   shift them also so they will be consistent with pph
       varname = 'PHB'
@@ -642,10 +642,10 @@
       do j = 0, nymin1
       do i = 0, nxmin1
 ! save potential temperature to ptth
-        ptth(i,j,k,n)=tth(i,j,k,n)+300.                 
+        ptth(i,j,k,n)=tth(i,j,k,n)+300.
         tth(i,j,k,n) = (tth(i,j,k,n) + 300.) * &
                   (pph(i,j,k,n)/1.0e5)**0.286
-  
+
       end do
       end do
       end do
@@ -918,7 +918,7 @@
 !          lendim, lendim_exp, lendim_max )
 !      do j = 0, nymin1
 !      do i = 0, nxmin1
-!      m_x(i,j,1)=(m_u(i,j,1)+m_u(i+1,j,1))*0.5 
+!      m_x(i,j,1)=(m_u(i,j,1)+m_u(i+1,j,1))*0.5
 !      enddo
 !      enddo
 !      if (ierr .ne. 0) then
@@ -1027,7 +1027,7 @@
           'readwind - bad tt2 count =', iduma
 
 
-! sea level pressure - calculate it from surface pressure and 
+! sea level pressure - calculate it from surface pressure and
 !    ground elevation using standard atmosphere relations
       do j = 0, nymin1
       do i = 0, nxmin1
@@ -1130,7 +1130,7 @@
             do i = 0, nxmin1
               k = nint(landuse_wrf(i,j))  ! Safely convert element to integer (nearest)
               select case (k) ! Translate USGS categories to Wesely-types
-                case(1)     ! USGS: Urban and built-up land 
+                case(1)     ! USGS: Urban and built-up land
                   xlanduse(i,j,1)  = 1.  ! Wesely: Urban land
                 case(2:4)   ! USGS: Any cropland, pasture
                   xlanduse(i,j,2)  = 1.  ! Wesely: Agricultural land
@@ -1372,11 +1372,11 @@
 ! needs to rotate u and v to work. needs read alpha or something like that.
 ! if in mercator, no need.
 !     divh(i,j,k)=(uuh(i+1,j,k)-uuh(i,j,k))/dx &
-!      +(vvh(i,j+1,k)-vvh(i,j,k))/dy   
+!      +(vvh(i,j+1,k)-vvh(i,j,k))/dy
       if (wind_option.lt.0) then
       divh(i,j,k)=(uuh(i+1,j,k)-uuh(i,j,k))/dx*m_x(i,j,1) &
-       +(vvh(i,j+1,k)-vvh(i,j,k))/dy*m_y(i,j,1)   
-      endif 
+       +(vvh(i,j+1,k)-vvh(i,j,k))/dy*m_y(i,j,1)
+      endif
           uuh(i,j,k) = 0.5*(uuh(i,j,k) + uuh(i+1,j,k))
           vvh(i,j,k) = 0.5*(vvh(i,j,k) + vvh(i,j+1,k))
       end do
@@ -1396,7 +1396,7 @@
 ! m_y=0.5*(m_v(i,j,1)+m_v(i,j+1,1))
       uuh(i,j,k) = uuh(i,j,k)/mu2 !*m_y(i,j,1) !without m=true wind
       vvh(i,j,k) = vvh(i,j,k)/mu2 !*m_x(i,j,1)
-      wwh(i,j,k) = wwh(i,j,k)/mu2 !*m_y(i,j,1) 
+      wwh(i,j,k) = wwh(i,j,k)/mu2 !*m_y(i,j,1)
       end do
       end do
       end do
@@ -1418,7 +1418,7 @@
 ! for ecmwf flexpart, if nwz = nlev_ec+1, then wwh is set
 !   to zero at the top level
 ! for wrf, nlev_ec==n_bottom_top and so nwz = nlev_ec+1.
-!   however, it doesn't seem appropriate to zero wwh at 
+!   however, it doesn't seem appropriate to zero wwh at
 !   the model top which might be ~100 hPa.
 ! so deactivate this for now
 !      if(levdiff2.eq.0) then
@@ -1469,15 +1469,16 @@
          strswitch=.false.
        endif
 
+!        Diego:reduce clutter
       if ((.not.hflswitch).or.(.not.strswitch)) then
-        write(*,*) 'WARNING: No (or incomplete) flux data ' //  &
-        'contained in WRF output file ', &
-        wfname(indj)
- 
+!        write(*,*) 'WARNING: No (or incomplete) flux data ' //  &
+!        'contained in WRF output file ', &
+!        wfname(indj)
+
 ! CALCULATE USTAR AND SSHF USING THE PROFILE METHOD
 !    As ECMWF has increased the model resolution, such that now the first model
 !    level is at about 10 m (where 10-m wind is given), use the 2nd ECMWF level
-!    (3rd model level in FLEXPART) for the profile method 
+!    (3rd model level in FLEXPART) for the profile method
 !
 ! FLEXPART_WRF - use k=(2+add_sfc_level) here instead of k=3
 !***************************************************************************
@@ -1506,7 +1507,7 @@
 ! Assign 10 m wind to model level at eta=1.0 to have one additional model
 !     level at the ground
 ! Specific humidity is taken the same as at one level above
-! Temperature is taken as 2 m temperature         
+! Temperature is taken as 2 m temperature
 !
 ! Note that the uuh, vvh, tth, & qvh data have already been shifted
 !     upwards by one level, when they were read in.
@@ -1542,7 +1543,7 @@
          enddo
         enddo
        enddo
- 
+
        do i=0,nxmax-1
         do j=0,nymax-1
          do k=1,nwzmax
@@ -1550,11 +1551,11 @@
          enddo
         enddo
        enddo
- 
 
 
 
 
-      return    
+
+      return
       end subroutine readwind
 

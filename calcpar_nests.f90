@@ -178,7 +178,7 @@
           call richardson(psn(ix,jy,1,n,l),ustarn(ix,jy,1,n,l),ttlev, &
           qvlev,ulev,vlev,nuvz,  pplev,sshfn(ix,jy,1,n,l), &
           tt2n(ix,jy,1,n,l),td2n(ix,jy,1,n,l),hmixn(ix,jy,1,n,l), &
-          wstarn(ix,jy,1,n,l),hmixplus,ierr,sfc_option)
+          wstarn(ix,jy,1,n,l),hmixplus,ierr,sfc_option, xlon, ylat )
 
           if (ierr .gt. 0) then
               write(*,9500) 'warning', l, ix, jy, xlon, ylat
