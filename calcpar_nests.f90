@@ -104,16 +104,16 @@
 !       ylat=ylat0n(l)+real(jy)*dyn(l)
         call xyindex_to_ll_wrf( l, real(ix), real(jy), xlon, ylat )
 
-!       if ( ((ix.eq.0) .or. (ix.eq.(nxn(l)-1)) .or.
+!       if ( ((ix.eq.0) .or. (ix.eq.(nxn(l)-1)) .or. 
 !    &                       (ix.eq.(nxn(l)-1)/2)) .and.
-!    &       ((jy.eq.0) .or. (jy.eq.(nyn(l)-1)) .or.
+!    &       ((jy.eq.0) .or. (jy.eq.(nyn(l)-1)) .or. 
 !    &                       (jy.eq.(nyn(l)-1)/2)) ) then
 !           if (ientry .eq. 1) then
-!               write(*,'(a,3i4,2f12.5)')
-!    &              'calcpar_nests l,i,j, xlon,ylat',
+!               write(*,'(a,3i4,2f12.5)') 
+!    &              'calcpar_nests l,i,j, xlon,ylat', 
 !    &              l, ix, jy, xlon, ylat
-!               write(*,'(a,12x,2f12.5)')
-!    &              '                     dlon,dlat',
+!               write(*,'(a,12x,2f12.5)') 
+!    &              '                     dlon,dlat', 
 !    &              (xlon-xlon2dn(ix,jy,l)), (ylat-ylat2dn(ix,jy,l))
 !           end if
 !       end if
@@ -178,15 +178,15 @@
           call richardson(psn(ix,jy,1,n,l),ustarn(ix,jy,1,n,l),ttlev, &
           qvlev,ulev,vlev,nuvz,  pplev,sshfn(ix,jy,1,n,l), &
           tt2n(ix,jy,1,n,l),td2n(ix,jy,1,n,l),hmixn(ix,jy,1,n,l), &
-          wstarn(ix,jy,1,n,l),hmixplus,ierr,sfc_option, xlon, ylat )
+          wstarn(ix,jy,1,n,l),hmixplus,ierr,sfc_option)
 
           if (ierr .gt. 0) then
-              write(*,9500) 'warning', l, ix, jy, xlon, ylat
+              write(*,9500) 'warning', l, ix, jy
           else if (ierr .lt. 0) then
-              write(*,9500) 'failure', l, ix, jy, xlon, ylat
+              write(*,9500) 'failure', l, ix, jy
               stop
           end if
-9500      format( 'calcpar_nests - richardson ', a, ' - l,ix,jy,xlon,ylat=', (2i5,3f5.2) )
+9500      format( 'calcpar_nests - richardson ', a, ' - l,ix,jy=', 3i5 )
 
           if(lsubgrid.eq.1) then
             subsceff=min(excessoron(ix,jy,l),hmixplus)

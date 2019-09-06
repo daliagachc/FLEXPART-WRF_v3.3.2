@@ -103,35 +103,35 @@
 !       ylat=ylat0+real(jy)*dy
         call xyindex_to_ll_wrf( 0, real(ix), real(jy), xlon, ylat )
 
-!       if ( ((ix.eq.0) .or. (ix.eq.nxmin1) .or.
+!       if ( ((ix.eq.0) .or. (ix.eq.nxmin1) .or. 
 !    &                       (ix.eq.nxmin1/2)) .and.
-!    &       ((jy.eq.0) .or. (jy.eq.nymin1) .or.
+!    &       ((jy.eq.0) .or. (jy.eq.nymin1) .or. 
 !    &                       (jy.eq.nymin1/2)) ) then
 !           if (ientry .eq. 1) then
-!               write(*,'(a,2i4,2f12.5)')
+!               write(*,'(a,2i4,2f12.5)') 
 !    &              'calcpar i,j, xlon,ylat', ix, jy, xlon, ylat
-!               write(*,'(a, 8x,2f12.5)')
-!    &              '             dlon,dlat',
+!               write(*,'(a, 8x,2f12.5)') 
+!    &              '             dlon,dlat', 
 !    &              (xlon-xlon2d(ix,jy)), (ylat-ylat2d(ix,jy))
 !               call ll_to_xyindex_wrf(
 !    &              xlon2d(ix,jy), ylat2d(ix,jy), dumx, dumy )
-!               write(*,'(a, 8x,2f12.5)')
-!    &              '             dxkm,dykm',
-!    &              ((dumx-ix)*dx*1.0e-3), ((dumy-jy)*dy*1.0e-3)
+!               write(*,'(a, 8x,2f12.5)') 
+!    &              '             dxkm,dykm', 
+!    &              ((dumx-ix)*dx*1.0e-3), ((dumy-jy)*dy*1.0e-3) 
 !
 !               if ((ix .eq. 0) .and. (jy .eq. 0)) then
 !                  dumxb = 2.33
 !                  dumyb = 3.44
 !                  call xyindex_to_ll_wrf( 0, dumxb, dumyb, dumx, dumy )
 !                  call ll_to_xyindex_wrf( dumx, dumy, dumx, dumy )
-!                  write(*,'(a,2f5.2,2f12.5)')
+!                  write(*,'(a,2f5.2,2f12.5)') 
 !    &                'xi,yj,     dxkm,dykm', dumxb, dumyb,
 !    &                ((dumx-dumxb)*dx*1.0e-3), ((dumy-dumyb)*dy*1.0e-3)
 !                  dumxb = 4.55
 !                  dumyb = 6.77
 !                  call xyindex_to_ll_wrf( 0, dumxb, dumyb, dumx, dumy )
 !                  call ll_to_xyindex_wrf( dumx, dumy, dumx, dumy )
-!                  write(*,'(a,2f5.2,2f12.5)')
+!                  write(*,'(a,2f5.2,2f12.5)') 
 !    &                'xi,yj,     dxkm,dykm', dumxb, dumyb,
 !    &                ((dumx-dumxb)*dx*1.0e-3), ((dumy-dumyb)*dy*1.0e-3)
 !               end if
@@ -179,7 +179,7 @@
 
 ! 3) Calculation of convective velocity scale and mixing height
 !**************************************************************
-
+            
           do i=1,nuvz
             ulev(i) =uuh(ix,jy,i)
             vlev(i) =vvh(ix,jy,i)
@@ -197,19 +197,18 @@
           ulev,vlev,nuvz,  pplev,sshf(ix,jy,1,n),tt2(ix,jy,1,n), &
           td2(ix,jy,1,n),hmix(ix,jy,1,n),wstar(ix,jy,1,n),hmixplus, &
 !         td2(ix,jy,1,n),hmixdummy,wstar(ix,jy,1,n),hmixplus, &
-          ierr,sfc_option, &
-          xlon, ylat )
+          ierr,sfc_option )
 !JB
 ! no reflec
 !         hmix(ix,jy,1,n)=5000.
 
           if (ierr .gt. 0) then
-              write(*,9500) 'warning', ix, jy, xlon, ylat
+              write(*,9500) 'warning', ix, jy
           else if (ierr .lt. 0) then
-              write(*,9500) 'failure', ix, jy, xlon, ylat
+              write(*,9500) 'failure', ix, jy
               stop
           end if
-9500      format( 'calcpar - richardson ', a, ' - ix,jy,xlon,ylat=', (2i5,2f5.2) )
+9500      format( 'calcpar - richardson ', a, ' - ix,jy=', 2i5 )
 
 
           if(lsubgrid.eq.1) then

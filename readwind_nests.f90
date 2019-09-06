@@ -48,11 +48,11 @@
 !  13 JUNE  2007  add ext_scalar, pbl_physics                                  *
 !  19 Oct   2007  add RAINC, RAINNC, CLDFRA                                    *
 !  Feb 2012, adapt it for mean wind. Jerome Brioude                            *
-!                                                                              *
+!                                                                              * 
 !  2015-03-26, A. Dingwell:                                                    *
 !             Updated calls to read_ncwrfout_gridinfo to match updates in that *
-!             subroutine.                                                      *
-!                                                                              *
+!             subroutine.                                                      * 
+!                                                                              * 
 !*******************************************************************************
 
   use par_mod
@@ -235,21 +235,21 @@
           write(*,9125) l, 'unable to locate date/time in met file',  &
               'indj, itime =', indj, itime, fnamenc
           stop
-      else
+      else 
           jul = juldate( jyyyymmdd, jhhmmss )
           duma = (jul-bdate)*86400.
           iduma = nint(duma)
           if (iduma .ne. wftime(indj)) goto 1100
       end if
-      if (option_verbose.ge.1) then
+      if (option_verbose.eq.1) then
 
-      write(*,*)
+      write(*,*) 
       write(*,*) 'readwind_nests processing wrfout file ='
       write(*,*) fnamenc
       write(*,*) 'itime, ymd, hms =', itime, jyyyymmdd, jhhmmss
       endif
 
-! read eta_w_wrf, eta_u_wrf, p_top_wrf, ylat2d, xlon2d from the
+! read eta_w_wrf, eta_u_wrf, p_top_wrf, ylat2d, xlon2d from the 
 ! netcdf wrfout file and compare to those from the 1st met. file
 
       varname = 'ZNW'
@@ -395,13 +395,13 @@
 !       V VELOCITY
 !       W VELOCITY
 !       TEMPERATURE
-!       SPEC. HUMIDITY
+!       SPEC. HUMIDITY  
 !       SURF. PRESS.
 !       SEA LEVEL PRESS.
 !       10 M U VELOCITY
 !       10 M V VELOCITY
 !       2 M TEMPERATURE
-!       2 M DEW POINT
+!       2 M DEW POINT  
 !       SNOW DEPTH
 !       CLOUD COVER
 !       LARGE SCALE PREC.
@@ -488,7 +488,7 @@
 
       endif
 ! w wind velocity
-!   this is on the "W-grid", and
+!   this is on the "W-grid", and 
 !   the wrf output file contains nwz levels, so no shifting needed
 !     varname = 'W'
       if (wind_option.le.0) varname = 'W'
@@ -556,7 +556,7 @@
 
 ! height - read base state and perturbation geopotential,
 !     then combine and divide by gravity
-!   these are on the "W-grid", and
+!   these are on the "W-grid", and 
 !     the wrf output file contains nwz levels
 !   shift them also so they will be consistent with pph
       varname = 'PHB'
@@ -716,7 +716,7 @@
 !      do j = 0, nyn(l)-1
 !      do i = 0, nxn(l)-1
 !
-!! better fix
+!! better fix 
 !!   -- calculate surface pressure from lowest level pressure, temp, height
 !!   -- use wrf pressures (pph array) wherever possible
 !!      (avoid using surface pressure and the akz/bkz, akm/bkm)
@@ -808,7 +808,7 @@
           varname, mub(0,0,1), &
           itime, &
           ndims, ndims_exp, ndims_max, &
-          lendim, lendim_exp, lendim_max )
+          lendim, lendim_exp, lendim_max ) 
       if (ierr .ne. 0) then
           write(*,9100) 'error doing MUB', fnamenc
           stop
@@ -910,9 +910,9 @@
 !          itime, &
 !          ndims, ndims_exp, ndims_max, &
 !          lendim, lendim_exp, lendim_max )
-!      if (ierr .ne. 0) then
+!      if (ierr .ne. 0) then 
 !          write(*,9100) 'error doing MAP U', fnamenc
-!          stop
+!          stop 
 !      end if
 !
 !      varname = 'MAPFAC_V'
@@ -982,7 +982,7 @@
           'readwind_nests - bad tt2n count =', iduma
 
 
-! sea level pressure - calculate it from surface pressure and
+! sea level pressure - calculate it from surface pressure and 
 !    ground elevation using standard atmosphere relations
       do j = 0, nyn(l)-1
       do i = 0, nxn(l)-1
@@ -1030,7 +1030,7 @@
 
 !
 ! Convective precipitation, (accumulated value, mm)
-
+ 
       varname = 'RAINC'
       call read_ncwrfout_1realfield( ierr, idiagaa, fnamenc, &
           varname, convprecn(0,0,1,n,l), &
@@ -1047,7 +1047,7 @@
       end if
 
 ! CLOUD FRACTION (clound cover)
-
+ 
       varname = 'CLDFRA'
       call read_ncwrfout_1realfield( ierr, idiagaa, fnamenc, &
           varname, tccn(0,0,1,n,l), &
@@ -1084,7 +1084,7 @@
             do i = 0, nxn(l)-1
               k = nint(landuse_wrf(i,j))  ! Safely convert element to integer (nearest)
               select case (k) ! Translate USGS categories to Wesely-types
-                case(1)   ! USGS: Urban and built-up land
+                case(1)   ! USGS: Urban and built-up land 
                   xlandusen(i,j,1,l)  = 1.  ! Wesely: Urban land
                 case(2:4)   ! USGS: Any cropland, pasture
                   xlandusen(i,j,2,l)  = 1.  ! Wesely: Agricultural land
@@ -1245,7 +1245,7 @@
             surfstrn(i,j,1,n,l)=ustarn(i,j,1,n,l)/dumarray_pp(i,j,kbgn)
             enddo
             enddo
-
+  
       end if
 
       if(sfc_option .eq. sfc_option_wrf) then
@@ -1366,23 +1366,22 @@
       if(sfc_option .eq. sfc_option_diagnosed) then
         do j=0,nyn(l)-1
         do i=0,nxn(l)-1
-        surfstrn(i,j,1,n,l)=sqrt(ewss(i,j)**2+nsss(i,j)**2)
+        surfstrn(i,j,1,n,l)=sqrt(ewss(i,j)**2+nsss(i,j)**2) 
        enddo
        enddo
         strswitch=.false.    ! Surface stress is not available
       endif
 
-!      Diego: reduce clutter
       if ((.not.hflswitch).or.(.not.strswitch)) then
-!        write(*,*) 'WARNING: No (or incomplete) flux data ' //  &
-!        'contained in WRF output file ', &
-!        wfname(indj)
-
+        write(*,*) 'WARNING: No (or incomplete) flux data ' //  &
+        'contained in WRF output file ', &
+        wfname(indj)
+ 
 
 ! CALCULATE USTAR AND SSHF USING THE PROFILE METHOD
 !    As ECMWF has increased the model resolution, such that now the first model
 !    level is at about 10 m (where 10-m wind is given), use the 2nd ECMWF level
-!    (3rd model level in FLEXPART) for the profile method
+!    (3rd model level in FLEXPART) for the profile method 
 !
 ! FLEXPART_WRF - use k=(2+add_sfc_level) here instead of k=3
 !***************************************************************************
@@ -1411,7 +1410,7 @@
 ! Assign 10 m wind to model level at eta=1.0 to have one additional model
 !     level at the ground
 ! Specific humidity is taken the same as at one level above
-! Temperature is taken as 2 m temperature
+! Temperature is taken as 2 m temperature         
 !
 ! Note that the uuh, vvh, tth, & qvh data have already been shifted
 !     upwards by one level, when they were read in.
@@ -1447,7 +1446,7 @@
          enddo
         enddo
        enddo
-
+ 
        do i=0,nxn(L)-1
         do j=0,nyn(L)-1
          do k=1,nwzmax
@@ -1464,5 +1463,5 @@
 
 
 
-      return
+      return    
       end subroutine readwind_nests

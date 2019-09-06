@@ -235,7 +235,7 @@
           iduma = nint(duma)
           if (iduma .ne. wftime(indj2)) goto 1100
       end if
-      if (option_verbose.ge.1) then
+      if (option_verbose.eq.1) then
       write(*,*) 
       write(*,*) 'readwind processing wrfout file ='
       write(*,*) fnamenc
@@ -348,7 +348,7 @@
           iduma = nint(duma)
           if (iduma .ne. wftime(indj2)) goto 1101
       end if
-      if (option_verbose.ge.1) then
+      if (option_verbose.eq.1) then
       write(*,*) 
       write(*,*) 'readwind processing wrfout file ='
       write(*,*) fnamenc

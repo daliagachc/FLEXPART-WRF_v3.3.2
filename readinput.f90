@@ -100,7 +100,7 @@ subroutine readinput
   write(*,*) "Reading pathnames"
   call skplin(1,unitpath)
   do i=1,numpath
-    read(unitpath,'(a)',err=800) path(i)
+    read(unitpath,'(a)',err=800) path(i) 
     length(i)=index(path(i),' ')-1
   enddo
 
@@ -108,8 +108,8 @@ subroutine readinput
 !***************************************************
 
   do i=1,maxnests
-    read(unitpath,'(a)') path(numpath+2*(i-1)+1)
-    read(unitpath,'(a)') path(numpath+2*(i-1)+2)
+    read(unitpath,'(a)') path(numpath+2*(i-1)+1) 
+    read(unitpath,'(a)') path(numpath+2*(i-1)+2) 
     if (path(numpath+2*(i-1)+1)(1:5).eq.'=====') goto 30
     length(numpath+2*(i-1)+1)=index(path(numpath+2*(i-1)+1),' ')-1
     length(numpath+2*(i-1)+2)=index(path(numpath+2*(i-1)+2),' ')-1
@@ -263,13 +263,13 @@ subroutine readinput
 !Af IND_SAMP = -1 : xmass / rho
 
 !AF IND_SOURCE switches between different units for concentrations at the source
-!Af   NOTE that in backward simulations the release of computational particles
+!Af   NOTE that in backward simulations the release of computational particles 
 !Af   takes place at the "receptor" and the sampling of p[articles at the "source".
-!Af          1 = mass units
-!Af          2 = mass mixing ratio units
+!Af          1 = mass units 
+!Af          2 = mass mixing ratio units 
 !Af IND_RECEPTOR switches between different units for concentrations at the receptor
-!Af          1 = mass units
-!Af          2 = mass mixing ratio units
+!Af          1 = mass units 
+!Af          2 = mass mixing ratio units 
 
   if ( ldirect .eq. 1 ) then  ! FWD-Run
 !Af set release-switch
@@ -329,7 +329,7 @@ subroutine readinput
 ! Determine kind of dispersion method
 !************************************
 
-  if (ctl.gt.0.) then
+  if (ctl.gt.0.) then    
     method=1
     mintime=minstep
   else
@@ -439,7 +439,7 @@ subroutine readinput
     write(*,*) ' NOT PARAMETERIZED DURING THIS SIMULATION.  '
     write(*,*) '             ----------------               '
   endif
-
+   
   if ((ipout.ne.0).and.(ipout.ne.1).and.(ipout.ne.2)) then
     write(*,*) ' #### FLEXPART MODEL ERROR!             :     #### '
     write(*,*) ' #### IPOUT MUST BE 1, 2 OR 3!                #### '
@@ -577,8 +577,7 @@ subroutine readinput
     write(*,*) ' #### FLEXPART MODEL ERROR! SFC_OPTION =',sfc_option
     write(*,*) ' #### Reading from WRF no longer supported.'
     write(*,*) ' #### ---------------------------------'
-    write(*,*) 'be careful option added by Diego      '
-!    stop
+    stop
   else
     write(*,*) ' #### FLEXPART MODEL ERROR!                   #### '
     write(*,*) ' #### SFC_OPTION MUST BE ONE OF:              #### '
@@ -670,7 +669,7 @@ subroutine readinput
 ! to 1 and maximum age to a large number
 !**********************************************************************
 
-  if(option_verbose .ge. 1) print*,'nageclass',nageclass
+  if(option_verbose .ge. 1) print*,'nageclass',nageclass 
   do i=2,nageclass
     read(unitpath,*) lage(i)
 !        print*,'age',lage(i),i
@@ -734,7 +733,7 @@ subroutine readinput
 !************************************************************************
 !hmjb beg=>dbeg    end=>dend
   if (ideltas.gt.0) then       ! forward trajectories
-     dbeg=bdate-1.
+     dbeg=bdate-1.                  
      dend=bdate+dble(real(ideltas)/86400.)+dble(real(idiffmax)/ &
           86400.)
   else                         ! backward trajectories
@@ -753,7 +752,7 @@ subroutine readinput
   do i=1,3
     read(unitavailab,*)
   enddo
-
+      
   numbwf=0
 100     read(unitavailab,*,end=99) ldat,ltim,fname,spec
   jul=juldate(ldat,ltim)
@@ -867,7 +866,7 @@ subroutine readinput
       wfname(i)=wfname1(i)
       wfspec(i)=wfspec1(i)
       wftime(i)=wftime1(i)
-    if(i.gt.1)  wfdt(i)=wftime1(i)-wftime1(i-1)
+    if(i.gt.1)  wfdt(i)=wftime1(i)-wftime1(i-1)  
     enddo
     do k=1,numbnests
     do i=1,numbwfn(k)
@@ -881,8 +880,8 @@ subroutine readinput
       wfname(numbwf-i+1)=wfname1(i)
       wfspec(numbwf-i+1)=wfspec1(i)
       wftime(numbwf-i+1)=wftime1(i)
-!       if(i.lt.numbwf) wfdt(numbwf-i+1)=wftime1(i+1)-wftime1(i)
-    if(i.gt.1) wfdt(numbwf-i+1)=wftime1(i)-wftime1(i-1)
+!       if(i.lt.numbwf) wfdt(numbwf-i+1)=wftime1(i+1)-wftime1(i)  
+    if(i.gt.1) wfdt(numbwf-i+1)=wftime1(i)-wftime1(i-1)  
     enddo
     do k=1,numbnests
     do i=1,numbwfn(k)
@@ -893,15 +892,15 @@ subroutine readinput
     enddo
   endif
 
-! Check the time difference between the wind fields. If it is big,
-! write a warning message. If it is too big, terminate the trajectory.
+! Check the time difference between the wind fields. If it is big, 
+! write a warning message. If it is too big, terminate the trajectory. 
 !*********************************************************************
 
   do i=2,numbwf
     idiff=abs(wftime(i)-wftime(i-1))
     if (idiff.gt.idiffmax) then
       write(*,*) 'FLEXPART WARNING: TIME DIFFERENCE BETWEEN TWO'
-      write(*,*) 'WIND FIELDS IS TOO BIG FOR TRANSPORT CALCULATION'
+      write(*,*) 'WIND FIELDS IS TOO BIG FOR TRANSPORT CALCULATION' 
       write(*,*) 'THEREFORE, TRAJECTORIES HAVE TO BE SKIPPED.'
     else if (idiff.gt.idiffnorm) then
       write(*,*) 'FLEXPART WARNING: TIME DIFFERENCE BETWEEN TWO'
@@ -990,7 +989,7 @@ subroutine readinput
 ! *** NOTE ***
 ! [xtmp1, ytmp1] are the coordinates of the southwest corner
 !    of the first (i.e., southwest or lower-left) output grid cell
-! [xtmp2, ytmp2] are the coordinates of the northeast corner
+! [xtmp2, ytmp2] are the coordinates of the northeast corner 
 !    of the last (i.e,, northeast or upper-right) output grid cell
 !****************************************
 
@@ -1002,9 +1001,9 @@ subroutine readinput
   read(unitpath,*) numxgrid
   !read(unitpath,'(2x,i7)') numygrid
   read(unitpath,*) numygrid
-  !read(unitpath,'(2x,i4)') outgriddef
-  read(unitpath,*) outgriddef
-  if (outgriddef.eq.1) then
+  !read(unitpath,'(2x,i4)') outgriddef 
+  read(unitpath,*) outgriddef 
+  if (outgriddef.eq.1) then 
     !read(unitpath,'(f15.8)') xtmp2
     read(unitpath,*) xtmp2
     !read(unitpath,'(f15.8)') ytmp2
@@ -1015,7 +1014,7 @@ subroutine readinput
     read(unitpath,*) dxout
     read(unitpath,*) dyout
     xtmp2=dxout*real(numxgrid)+xtmp1
-    ytmp2=dyout*real(numygrid)+ytmp1
+    ytmp2=dyout*real(numygrid)+ytmp1 
   endif
 
   if (option_verbose.ge. 1) then
@@ -1055,7 +1054,7 @@ subroutine readinput
       dxoutl= (outgrid_nelon-outgrid_swlon)/numxgrid
     endif
   else
-! In this case, the above inputs are in grid-meters
+! In this case, the above inputs are in grid-meters 
 ! Need to convert from grid-meters to lat/lon
     out_xm0 = xtmp1
     out_ym0 = ytmp1
@@ -1076,7 +1075,7 @@ subroutine readinput
     write(*,'(a,1p,2e18.10)') 'out_xm0, out_ym0 ', out_xm0, out_ym0
     write(*,'(a,1p,2e18.10)') 'dxout,   dyout   ', dxout, dyout
   endif
-
+        
 ! Check validity of output grid (shall be within model domain)
 !*************************************************************
 
@@ -1108,34 +1107,34 @@ subroutine readinput
 
 ! 2. Vertical levels of output grid
 !**********************************
-
+      
   read(unitpath,*) numzgrid
 !        if (numzgrid.gt.maxzgrid) then
-!       write(*,*) ' #### FLEXPART MODEL ERROR! TOO MANY HEIGHT   #### '
-!       write(*,*) ' #### LEVELS ARE GIVEN FOR OUTPUT GRID.       #### '
-!       write(*,*) ' #### MAXIMUM NUMBER IS ',maxzgrid,'          #### '
-!       write(*,*) ' #### PLEASE MAKE CHANGES IN FILE OUTGRID.    #### '
+!       write(*,*) ' #### FLEXPART MODEL ERROR! TOO MANY HEIGHT   #### ' 
+!       write(*,*) ' #### LEVELS ARE GIVEN FOR OUTPUT GRID.       #### ' 
+!       write(*,*) ' #### MAXIMUM NUMBER IS ',maxzgrid,'          #### ' 
+!       write(*,*) ' #### PLEASE MAKE CHANGES IN FILE OUTGRID.    #### ' 
 !        stop
 !        endif
 
   allocate(outheight(numzgrid), stat=stat)
   if (stat.ne.0) write(*,*)'ERROR: could not allocate outheight'
-
+  
   allocate(outheighthalf(numzgrid), stat=stat)
   if (stat.ne.0) write(*,*)'ERROR: could not allocate outheighthalf'
 
   allocate(oroout(0:numxgrid-1,0:numygrid-1), stat=stat)
   if (stat.ne.0) write(*,*)'ERROR: could not allocate oroout'
-
+  
   allocate(area(0:numxgrid-1,0:numygrid-1), stat=stat)
   if (stat.ne.0) write(*,*)'ERROR: could not allocate area'
-
+  
   allocate(volume(0:numxgrid-1,0:numygrid-1,numzgrid), stat=stat)
   if (stat.ne.0) write(*,*)'ERROR: could not allocate volume'
-
+  
   allocate(areaeast(0:numxgrid-1,0:numygrid-1,numzgrid), stat=stat)
   if (stat.ne.0) write(*,*)'ERROR: could not allocate areaeast'
-
+  
   allocate(areanorth(0:numxgrid-1,0:numygrid-1,numzgrid), stat=stat)
   if (stat.ne.0) write(*,*)'ERROR: could not allocate areanorth'
 
@@ -1150,10 +1149,10 @@ subroutine readinput
 
   do j=2,numzgrid
     if (outheight(j).le.outheight(j-1)) then
-      write(*,*) ' #### FLEXPART MODEL ERROR! YOUR SPECIFICATION#### '
-      write(*,*) ' #### OF OUTPUT LEVELS IS CORRUPT AT LEVEL    #### '
-      write(*,*) ' #### ',j,'                              #### '
-      write(*,*) ' #### PLEASE MAKE CHANGES IN  OUTGRID.        #### '
+      write(*,*) ' #### FLEXPART MODEL ERROR! YOUR SPECIFICATION#### ' 
+      write(*,*) ' #### OF OUTPUT LEVELS IS CORRUPT AT LEVEL    #### ' 
+      write(*,*) ' #### ',j,'                              #### ' 
+      write(*,*) ' #### PLEASE MAKE CHANGES IN  OUTGRID.        #### ' 
     endif
   enddo
 
@@ -1220,7 +1219,7 @@ subroutine readinput
       endif
 
     else
-      ! In this case, the above inputs are in grid-meters
+      ! In this case, the above inputs are in grid-meters 
       ! Need to convert from grid-meters to lat/lon
       out_xm0n = xtmp1
       out_ym0n = ytmp1
@@ -1264,10 +1263,10 @@ subroutine readinput
     youtshiftn=ymet0-out_ym0n
     allocate(orooutn(0:numxgridn-1,0:numygridn-1), stat=stat)
     if (stat.ne.0) write(*,*)'ERROR: could not allocate orooutn'
-
+    
     allocate(arean(0:numxgridn-1,0:numygridn-1), stat=stat)
     if (stat.ne.0) write(*,*)'ERROR: could not allocate arean'
-
+    
     allocate(volumen(0:numxgridn-1,0:numygridn-1,numzgrid), stat=stat)
     if (stat.ne.0) write(*,*)'ERROR: could not allocate volumen'
   endif
@@ -1322,10 +1321,10 @@ subroutine readinput
 !************************************************
 
   if (numreceptor.gt.maxreceptor) then
-    write(*,*) ' #### FLEXPART MODEL ERROR! TOO MANY RECEPTOR #### '
-    write(*,*) ' #### POINTS ARE GIVEN.                       #### '
-    write(*,*) ' #### MAXIMUM NUMBER IS ',maxreceptor,'       #### '
-    write(*,*) ' #### PLEASE MAKE CHANGES IN      RECEPTORS   #### '
+    write(*,*) ' #### FLEXPART MODEL ERROR! TOO MANY RECEPTOR #### ' 
+    write(*,*) ' #### POINTS ARE GIVEN.                       #### ' 
+    write(*,*) ' #### MAXIMUM NUMBER IS ',maxreceptor,'       #### ' 
+    write(*,*) ' #### PLEASE MAKE CHANGES IN      RECEPTORS   #### ' 
     stop
   endif
   do j=1,numreceptor
@@ -1344,7 +1343,7 @@ subroutine readinput
       call ll_to_xyindex_wrf( receptor_lon(j), receptor_lat(j), &
         xreceptor(j), yreceptor(j) )
     else
-      ! In this case, the above inputs are in grid-meters
+      ! In this case, the above inputs are in grid-meters 
       ! Need to convert from grid-meters to grid-index coordinates, then to lat/lon
       xreceptor(j)=(x-xmet0)/dx
       yreceptor(j)=(y-ymet0)/dy
@@ -1516,7 +1515,7 @@ subroutine readinput
 !*************************************************************************
 
   read(unitpath,*) nspec
-  if (nspec.gt.maxspec) then
+  if (nspec.gt.maxspec) then 
     write(*,*) '#####################################################'
     write(*,*) '#### FLEXPART MODEL SUBROUTINE READRELEASES:     ####'
     write(*,*) '####                                             ####'
@@ -1542,7 +1541,7 @@ subroutine readinput
       write(*,*) '#### FOR BACKWARD RUNS, ONLY 1 SPECIES IS ALLOWED####'
       write(*,*) '#####################################################'
       stop
-    endif
+    endif 
 
 ! Molecular weight
 !*****************
@@ -1588,7 +1587,7 @@ subroutine readinput
     if (density(i).gt.0.) then                  ! Additional parameters
 !          call part0(dquer(i),dsigma(i),density(i),fracth,schmih,vsh)
       call part0(dquer(i),dsigma(i),density(i),fracth,schmih,cun,vsh)
-
+      
       do j=1,ni
         fract(i,j)=fracth(j)
         schmi(i,j)=schmih(j)
@@ -1655,10 +1654,10 @@ subroutine readinput
   numpoint2=numpoint+0
   allocate(ireleasestart(numpoint2), stat=stat)
   if (stat.ne.0) write(*,*)'ERROR: could not allocate RELEASPOINT'
-
+  
   allocate(ireleaseend(numpoint2), stat=stat)
   if (stat.ne.0) write(*,*)'ERROR: could not allocate RELEASPOINT'
-
+  
   allocate(xpoint1(numpoint2), stat=stat)
   if (stat.ne.0) write(*,*)'ERROR: could not allocate RELEASPOINT'
 
@@ -1752,15 +1751,15 @@ subroutine readinput
     !read(unitpath,'(a20)',err=998) compoint(j)(1:20)
 
     if(option_verbose.ge.1) print*,'release location=',j
-
+    
     if(option_verbose.ge.1) then ! AD: If we have many points, this extra info is extremely useful!
-      if (j.le.2000) then
+      if (j.le.2000) then 
         write(*,*) 'COMPOINT = "',compoint(j)(1:40)
       else
         write(*,*) 'COMPOINT = "',compoint(2001)(1:40)
       endif
     endif
-
+        
 !     write(*,'(/a,i7)') 'readreleases diagnostics - numpoint = ', j
 !     write(*,'(a,1p,2e18.10)') 'x, ypoint1 (in) ',  &
 !        xpoint1(j), ypoint1(j)
@@ -1787,12 +1786,12 @@ subroutine readinput
         xpoint2(j), ypoint2(j) )
 
     else
-!        write(*,'(a,1p,2e18.10)') 'x, ypoint1      ',
+!        write(*,'(a,1p,2e18.10)') 'x, ypoint1      ', 
 !    &      xpoint1(j), ypoint1(j)
-!        write(*,'(a,1p,2e18.10)') 'x, ypoint2      ',
+!        write(*,'(a,1p,2e18.10)') 'x, ypoint2      ', 
 !    &      xpoint2(j), ypoint2(j)
 !      else
-! In this case, the above inputs are in grid-meters
+! In this case, the above inputs are in grid-meters 
 ! Need to convert from grid-meters to lat/lon
       call xymeter_to_ll_wrf( xpoint1(j), ypoint1(j), &
         releases_swlon(j), releases_swlat(j) )
@@ -1819,14 +1818,14 @@ subroutine readinput
 ! Check whether x coordinates of release point are within model domain
 !*********************************************************************
 
-! FLEXPART_WRF - x & y coords are in meters, so the following lines
+! FLEXPART_WRF - x & y coords are in meters, so the following lines 
 !   (which adjust longitude by +/-360 degrees) are not needed
 !
-!      if (xpoint1(numpoint).lt.xlon0)
+!      if (xpoint1(numpoint).lt.xlon0) 
 !    +       xpoint1(numpoint)=xpoint1(numpoint)+360.
 !      if (xpoint1(numpoint).gt.xlon0+(nxmin1)*dx)
 !    +       xpoint1(numpoint)=xpoint1(numpoint)-360.
-!      if (xpoint2(numpoint).lt.xlon0)
+!      if (xpoint2(numpoint).lt.xlon0) 
 !    +       xpoint2(numpoint)=xpoint2(numpoint)+360.
 !      if (xpoint2(numpoint).gt.xlon0+(nxmin1)*dx)
 !    +       xpoint2(numpoint)=xpoint2(numpoint)-360.
@@ -2052,11 +2051,11 @@ subroutine readinput
       write(*,*) '#####################################################'
       stop
 
-800   write(*,*) ' #### TRAJECTORY MODEL ERROR! ERROR WHILE     #### '
-      write(*,*) ' #### READING FILE PATHNAMES.                 #### '
+800   write(*,*) ' #### TRAJECTORY MODEL ERROR! ERROR WHILE     #### ' 
+      write(*,*) ' #### READING FILE PATHNAMES.                 #### ' 
       stop
 
-801   write(*,*) '#### TRAJECTORY MODEL ERROR! FILE '// inputname
+801   write(*,*) '#### TRAJECTORY MODEL ERROR! FILE '// inputname 
       write(*,*) '#### CANNOT BE OPENED IN THE CURRENT WORKING #### '
       write(*,*) '#### DIRECTORY.                              #### '
       stop
@@ -2068,10 +2067,10 @@ subroutine readinput
       stop
 
 804   write(*,*) ' #### FLEXPART MODEL ERROR! FILE #### '
-      write(*,'(a)') '     '//path(3)(1:length(3))
+      write(*,'(a)') '     '//path(3)(1:length(3)) 
       write(*,*) ' #### CANNOT BE OPENED           #### '
       stop
-
+      
 996   write(*,*) '#####################################################'
       write(*,*) '#### FLEXPART MODEL ERROR!                      #### '
       write(*,*) '#### WET DEPOSITION SWITCHED ON, BUT NO HENRYS  #### '
@@ -2079,5 +2078,5 @@ subroutine readinput
       write(*,*) '#### PLEASE MODIFY SPECIES DESCR.               #### '
       write(*,*) '#####################################################'
       stop
-
+      
 end subroutine readinput

@@ -21,7 +21,7 @@
 !* along with FLEXPART.  If not, see <http://www.gnu.org/licenses/>.   *
 !***********************************************************************
       subroutine richardson(psurf,ust,ttlev,qvlev,ulev,vlev,nuvz, &
-        pplev,hf,tt2,td2,h,wst,hmixplus,ierr,sfc_option, xlon, ylat )
+        pplev,hf,tt2,td2,h,wst,hmixplus,ierr,sfc_option)
 !     subroutine richardson(psurf,ust,ttlev,qvlev,ulev,vlev,nuvz,
 !    +akz,bkz,hf,tt2,td2,h,wst,hmixplus,ierr)
 
@@ -82,16 +82,15 @@
 !      parameter(const=r_air/ga,ric=0.25,b=100.,bs=8.5,itmax=3)
 
   use par_mod
-
+  
   implicit none
-
+  
   integer :: i,k,nuvz,iter,ierr
   real :: tv,tvold,zref,z,zold,pint,pold,theta,thetaref,ri
   real :: pplev(nuvz),ulev(nuvz),vlev(nuvz),hf,wst,tt2,td2,ew
   real :: psurf,ust,ttlev(nuvz),qvlev(nuvz),h,excess
   real :: thetaold,zl,ul,vl,thetal,ril,hmixplus,wspeed,bvfsq,bvf
   real :: f_qvsat,rh,rhold,rhl,theta1,theta2,zl1,zl2,thetam
-  real :: xlon, ylat
 
   real,parameter    :: const=r_air/ga, ric=0.25, b=100., bs=8.5
   integer,parameter :: itmax=3
@@ -101,93 +100,67 @@
 
       excess=0.0
       iter=0
-
+ 
 ! Compute virtual temperature and virtual potential temperature at
 ! reference level (2 m)
 !*****************************************************************
-
+ 
 30    iter=iter+1
-
-      !Diego
-!      ierr = 0
-
+ 
       pold=psurf
       tvold=tt2*(1.+0.378*ew(td2)/psurf)
       zold=2.0
       zref=zold
       rhold=ew(td2)/ew(tt2)
-
+ 
       thetaref=tvold*(100000./pold)**(r_air/cpa)+excess
       thetaold=thetaref
-
-
+ 
+ 
 ! Integrate z up to one level above zt
 !*************************************
-
+ 
       do k=2,nuvz
-        !pint=akz(k)+bkz(k)*psurf  ! pressure on model layers
+!       pint=akz(k)+bkz(k)*psurf  ! pressure on model layers
         pint=pplev(k)             ! pressure on model layers
         tv=ttlev(k)*(1.+0.608*qvlev(k))
-
+ 
         if (abs(tv-tvold).gt.0.2) then
           z=zold+const*log(pold/pint)*(tv-tvold)/log(tv/tvold)
         else
           z=zold+const*log(pold/pint)*tv
         endif
-
+ 
         theta=tv*(100000./pint)**(r_air/cpa)
-        ! Petra
+! Petra
         rh = qvlev(k) / f_qvsat( pint, ttlev(k) )
-
-
-        !Calculate Richardson number at each level
-        !****************************************
-
+ 
+ 
+!alculate Richardson number at each level
+!****************************************
+ 
         ri=ga/thetaref*(theta-thetaref)*(z-zref)/ &
         max(((ulev(k)-ulev(2))**2+(vlev(k)-vlev(2))**2+b*ust**2),0.1)
-
-        !  addition of second condition: MH should not be placed in an
-        !  unstable layer (PS / Feb 2000)
+ 
+!  addition of second condition: MH should not be placed in an
+!  unstable layer (PS / Feb 2000)
         if (ri.gt.ric .and. thetaold.lt.theta) goto 20
-
+ 
         tvold=tv
         pold=pint
         rhold=rh
         thetaold=theta
-        zold=z
-      end do
-    ! fix bug ticket:139 as follows:
-    print*,'Warning - in richardson.f90, no Ri_c found &
-    simulation will continue but we dont know the implications. Diego. setting k = nuvz-1'
-    write(*,'(a         )') 'xlon, ylat = '
-    write(*,'(1p,4e18.10)') xlon,ylat
-
-    write(*,'(a         )') 'nuvz'
-    write(*,'(i5        )')  nuvz
-    write(*,'(a         )') 'psurf,ust,hf,tt2,td2,h,wst,hmixplus'
-    write(*,'(1p,4e18.10)')  psurf,ust,hf,tt2,td2,h,wst,hmixplus
-    write(*,'(a         )') 'ttlev'
-    write(*,'(1p,4e18.10)')  ttlev
-    write(*,'(a         )') 'qvlev'
-    write(*,'(1p,4e18.10)')  qvlev
-    write(*,'(a         )') 'ulev'
-    write(*,'(1p,4e18.10)')  ulev
-    write(*,'(a         )') 'vlev'
-    write(*,'(1p,4e18.10)')  vlev
-    write(*,'(a         )') 'pplev'
-    write(*,'(1p,4e18.10)')  pplev
-   !  k = nuvz
-   !  this was added by Diego to prevent Ri_c not found from stopping the simulation
-   k = nuvz - 1
+      zold=z
+  end do
 
         if (k .ge. nuvz) then
             write(*,*) 'richardson not working -- k = nuvz'
             ierr = -10
             goto 7000
         end if
-
+      
 20    continue
-
+ 
 ! Determine Richardson number between the critical levels
 !********************************************************
 
@@ -206,15 +179,14 @@
         if (ril.gt.ric) goto 25
         zl1=zl
         theta1=thetal
-        enddo
-
+        enddo 
+ 
 25    continue
-! if sfc_option = sfc_option_wrf,
+! if sfc_option = sfc_option_wrf, 
 ! pbl heights are read from WRF met. files and put into hmix (=h)
 !JB
 !     h=zl
       if(sfc_option .eq. sfc_option_diagnosed) h=zl
-
       if (h .le. 0.0) then
           write(*,*) 'richardson not working -- bad h =', h
           ierr = -20
@@ -223,14 +195,12 @@
 !         write(*,*) 'richardson not working -- too small h =', h
 !         ierr = +20
 !         return
-
       end if
-
+      
       thetam=0.5*(theta1+theta2)
-      wspeed=sqrt(ul**2+vl**2)
-      ! Wind speed at z=hmix
-      bvfsq=(ga/thetam)*(theta2-theta1)/(zl2-zl1)
-      ! Brunt-Vaisala frequency at z=hmix
+      wspeed=sqrt(ul**2+vl**2)                    ! Wind speed at z=hmix
+      bvfsq=(ga/thetam)*(theta2-theta1)/(zl2-zl1) ! Brunt-Vaisala frequency
+                                                  ! at z=hmix
 
 ! Under stable conditions, limit the maximum effect of the subgrid-scale topography
 ! by the maximum lifting possible from the available kinetic energy
@@ -243,10 +213,10 @@
         hmixplus=wspeed/bvf*convke                ! keconv = kinetic energy
       endif                                       ! used for lifting
 
-
+ 
 ! Calculate convective velocity scale
 !************************************
-
+ 
       if (hf.lt.0.) then
         wst=(-h*ga/thetaref*hf/cpa)**0.333
         excess=-bs*hf/cpa/wst

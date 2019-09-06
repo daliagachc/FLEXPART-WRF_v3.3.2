@@ -279,7 +279,7 @@
 !        ttime=now(1)*3600+now(2)*60+now(3)-ttime
         call cpu_time(finish)  
 !      print*,'read wind time',ttime
-             if (option_verbose.ge.1) then
+             if (option_verbose.eq.1) then
        print*,'read wind time',finish-start
          endif
 ! Release particles
@@ -521,7 +521,7 @@
         call cpu_time(finish)  
 
 !      print*,'processing time',ttime 
-             if (option_verbose.ge.1) then
+             if (option_verbose.eq.1) then
        print*,'processing time',finish-start
         endif
    endif !over myid
@@ -600,7 +600,7 @@
         call cpu_time(finish)  
 
 !       print*,'sending time',ttime
-           if (option_verbose.ge.1) then
+           if (option_verbose.eq.1) then
        print*,'sending time',finish-start
           endif
     else
@@ -885,7 +885,7 @@
 !!!$OMP FLUSH
 !        call itime(now)
 !        ttime=now(1)*3600+now(2)*60+now(3)-ttime
-             if (option_verbose.ge.1) then
+             if (option_verbose.eq.1) then
   call system_clock(clck_counts_end,clck_rate)
   tins=real(clck_counts_end - clck_counts_beg)/real(clck_rate)
        print*,'time',tins,cpttra,myid,ompid
@@ -944,7 +944,7 @@
 !        ttime=now(1)*3600+now(2)*60+now(3)-ttime
         call cpu_time(finish)  
 !      print*,'receiving time',ttime
-            if (option_verbose.ge.1) then
+            if (option_verbose.eq.1) then
        print*,'receiving time',finish-start 
            endif
     endif 
