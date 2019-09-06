@@ -71,6 +71,7 @@
   implicit none
 
   integer :: n,ix,jy,i,kz,lz,kzmin,ierr
+  integer :: l ! dummy par for consistency with nest (Diego)
   real :: ttlev(nuvzmax),qvlev(nuvzmax),obukhov,scalev,ol,hmixplus
   real :: ulev(nuvzmax),vlev(nuvzmax),ew,rh,vd(maxspec),subsceff,ylat
   real :: altmin,tvold,pold,zold,pint,tv,zlev(nuvzmax)
@@ -87,6 +88,8 @@
 ! Loop over entire grid
 !**********************
 !      ientry = ientry + 1
+
+  l = 1
 
 !$OMP PARALLEL DEFAULT(SHARED) &
 !$OMP PRIVATE(i,ix,jy,kz,lz,kzmin,tvold,pold,zold,zlev,tv,pint, &
@@ -198,7 +201,7 @@
           td2(ix,jy,1,n),hmix(ix,jy,1,n),wstar(ix,jy,1,n),hmixplus, &
 !         td2(ix,jy,1,n),hmixdummy,wstar(ix,jy,1,n),hmixplus, &
           ierr,sfc_option, &
-          xlon, ylat )
+          xlon, ylat, l)
 !JB
 ! no reflec
 !         hmix(ix,jy,1,n)=5000.
