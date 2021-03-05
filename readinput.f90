@@ -128,6 +128,9 @@ subroutine readinput
 
     30    numbnests = i - 1
 
+    !todo:Diego:
+    write(*,*) 'numbnests=',numbnests
+
     ! jdf end read pathnames
     !*************************************************
     ! jdf start read command

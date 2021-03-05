@@ -761,14 +761,14 @@
 !   -- use wrf pressures (pph array) wherever possible
 !      (avoid using surface pressure and the akz/bkz, akm/bkm)
 
-!      do j = 0, nymin1
-!      do i = 0, nxmin1
-!          duma = ps(i,j,1,n)
-!          dumdz = 0.5*(zzh(i,j,kbgn+1,n) - zzh(i,j,kbgn,n))
-!          tv = tth(i,j,kbgn,n)*(1.+0.61*qvh(i,j,kbgn,n))
-!          ps(i,j,1,n) = pph(i,j,kbgn,n)*exp( dumdz*ga/(r_air*tv) )
-!      end do
-!      end do
+      do j = 0, nymin1
+      do i = 0, nxmin1
+          duma = ps(i,j,1,n)
+          dumdz = 0.5*(zzh(i,j,kbgn+1,n) - zzh(i,j,kbgn,n))
+          tv = tth(i,j,kbgn,n)*(1.+0.61*qvh(i,j,kbgn,n))
+          ps(i,j,1,n) = pph(i,j,kbgn,n)*exp( dumdz*ga/(r_air*tv) )
+      end do
+      end do
 
 
 ! 10 meter u velocity
